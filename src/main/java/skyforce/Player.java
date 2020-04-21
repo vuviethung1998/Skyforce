@@ -13,6 +13,8 @@ public class Player implements KeyListener {
 
     private long current;
     private long delay;
+    private int health;
+    private int score;
 
     public Player(int x, int y) {
         this.x = x;
@@ -23,31 +25,36 @@ public class Player implements KeyListener {
         Display.frame.addKeyListener(this);
         current = System.nanoTime();
         delay = 100;
+        health = 3;
+        score = 0;
     }
 
     public void tick() {
-        if (left) {
-            if (x >= 50) {
-                x = x - 4;
+        if (health > 0) {
+            if (left) {
+                if (x >= 50) {
+                    x = x - 4;
+                }
             }
-        }
-        if (right) {
-            if (x <= 450 - 30) {
-                x = x + 4;
+            if (right) {
+                if (x <= 450 - 30) {
+                    x = x + 4;
+                }
             }
-        }
-        if (fire) {
-            long breaks = (System.nanoTime() - current) / 1000000;
-            if (breaks > delay) {
-                GameManager.bullets.add(new Bullet(x + 15, y + 10));
-                current = System.nanoTime();
+            if (fire) {
+                long breaks = (System.nanoTime() - current) / 1000000;
+                if (breaks > delay) {
+                    GameManager.bullets.add(new Bullet(x + 11, y + 10));
+                    current = System.nanoTime();
+                }
             }
         }
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.RED);
-        g.fillRect(x, y, 30, 30);
+        if (health > 0) {
+            g.drawImage(LoadImage.player, x, y, 30, 30, null);
+        }
     }
 
 
@@ -82,5 +89,29 @@ public class Player implements KeyListener {
         if (keycode == KeyEvent.VK_SPACE) {
             fire = false;
         }
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
+    }
+
+    public int getHealth() {
+        return this.health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public void incScore() {
+        this.score = this.score + 1;
     }
 }

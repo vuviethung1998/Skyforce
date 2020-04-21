@@ -2,31 +2,28 @@ package skyforce;
 
 import java.awt.*;
 
-public class Bullet {
+public class Enemy {
     private int x;
     private int y;
-    private int speed;
 
-    public Bullet(int x, int y) {
+    public Enemy(int x, int y) {
         this.x = x;
         this.y = y;
-        this.speed = 10;
     }
 
     public void tick() {
-        y = y - speed;
+        y = y + 1;
     }
 
     public void render(Graphics g) {
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, 6, 10);
+        g.drawImage(LoadImage.enemy, x, y, 25, 25, null);
     }
 
     public int getX() {
-        return this.x;
+        return x;
     }
 
     public int getY() {
-        return this.y;
+        return y;
     }
 }

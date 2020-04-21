@@ -18,8 +18,6 @@ public class GameSetup implements Runnable {
     private BufferStrategy buffer;
     private Graphics g;
 
-    private int y;
-
     public GameSetup(String title, int width, int height) {
         this.title = title;
         this.width = width;
@@ -27,12 +25,13 @@ public class GameSetup implements Runnable {
     }
 
     public void run() {
+        LoadImage.init();
         display = new Display(title, width, height);
         manager = new GameManager();
 
         manager.init();
 
-        int fps = 60;
+        int fps = 30;
         double timePerTick = 1000000000 / fps;
         double delta = 0;
         long current = System.nanoTime();
@@ -85,8 +84,7 @@ public class GameSetup implements Runnable {
         g.clearRect(0,0,width, height);
 
         // draw
-        g.setColor(Color.WHITE);
-        g.fillRect(50, 50, GAME_WIDTH, GAME_HEIGHT);
+        g.drawImage(LoadImage.image, 50 ,50, GAME_WIDTH, GAME_HEIGHT, null);
         manager.render(g);
         // end of draw
 
