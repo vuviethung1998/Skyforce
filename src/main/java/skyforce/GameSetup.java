@@ -18,6 +18,7 @@ public class GameSetup implements Runnable {
     private BufferStrategy buffer;
     private Graphics g;
 
+
     public GameSetup(String title, int width, int height) {
         this.title = title;
         this.width = width;
