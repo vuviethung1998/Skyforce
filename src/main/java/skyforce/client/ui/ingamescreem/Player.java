@@ -1,4 +1,4 @@
-package skyforce;
+package skyforce.client.ui.ingamescreem;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -33,12 +33,12 @@ public class Player implements KeyListener {
         if (health > 0) {
             if (left) {
                 if (x >= 50) {
-                    x = x - 4;
+                    x = x - 10;
                 }
             }
             if (right) {
                 if (x <= 450 - 30) {
-                    x = x + 4;
+                    x = x + 10;
                 }
             }
             if (fire) {

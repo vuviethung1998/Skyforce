@@ -1,4 +1,4 @@
-package skyforce;
+package skyforce.client.ui.ingamescreem;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;

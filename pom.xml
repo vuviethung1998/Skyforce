@@ -7,6 +7,16 @@
     <groupId>com.networkprogramming</groupId>
     <artifactId>skyforce</artifactId>
     <version>1</version>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
+        </dependency>
+
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

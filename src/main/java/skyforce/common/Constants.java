@@ -1,7 +1,7 @@
-package skyforce.config;
+package skyforce.common;
 
 public class Constants {
-    public static final int HOST_PORT = 6666;
+    public static final int HOST_PORT = 5000;
     public static final int MAX_ROOM_SIZE = 4;
 
     public static final int GAME_WIDTH = 400;

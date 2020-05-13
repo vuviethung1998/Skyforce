@@ -1,21 +1,29 @@
 package skyforce.client.ui.waitingroomscreen;
 
+import com.google.common.eventbus.Subscribe;
+import skyforce.common.EventBuz;
+import skyforce.packet.UpdateRoomPacket;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import static skyforce.config.Constants.*;
+import static skyforce.common.Constants.*;
 
 public class WaitingRoomScreen extends JPanel implements ActionListener {
 
+    private ArrayList<JLabel> slots;
 
     public WaitingRoomScreen(int width, int height) {
+        this.slots = new ArrayList<>();
         setSize(width, height);
         setLayout(null);
         initUI();
         setVisible(true);
+        EventBuz.getInstance().register(this);
     }
 
 
@@ -36,7 +44,8 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         startGameBtn.addActionListener(this);
 
         for (int i = 0; i < slotLocations.length; i++) {
-            add(createPlayerSlot(slotLocations[i], 210));
+            JPanel slot = createPlayerSlot(slotLocations[i], 210);
+            add(slot);
         }
 
         add(exitBtn);
@@ -56,6 +65,7 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         name.setFont(new Font(NORMAL_FONT, Font.PLAIN, 14));
 
         ret.add(name);
+        this.slots.add(name);
         return ret;
     }
 
@@ -63,5 +73,13 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
 
+    }
+
+    @Subscribe
+    public void opUpdate(UpdateRoomPacket p) {
+        for (int i = 0; i < p.getPlayerNames().size(); i++) {
+            String name = p.getPlayerNames().get(i);
+            this.slots.get(i).setText(name);
+        }
     }
 }

@@ -1,13 +1,16 @@
 package skyforce.client.ui.homescreen;
 
+import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
+import skyforce.common.EventBuz;
+import skyforce.server.Server;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static skyforce.config.Constants.*;
+import static skyforce.common.Constants.*;
 
 
 public class HomeScreen extends JPanel implements ActionListener{
@@ -57,8 +60,7 @@ public class HomeScreen extends JPanel implements ActionListener{
         } else if (e.getSource() == createGameBtn) {
             createNewGame();
         } else if (e.getSource() == joinGameBtn) {
-            System.out.println(2);
-            ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
+            joinGame();
         }
     }
 
@@ -72,23 +74,51 @@ public class HomeScreen extends JPanel implements ActionListener{
         return name;
     }
 
-    private void createNewGame() {
-        String playerName = enterPlayerName();
+    private boolean validateName(String playerName) {
         if (playerName == null) {
             JOptionPane.showMessageDialog(
                     this,
                     "Please enter a nickname before starting game!"
             );
-        } else if (playerName.length() < 4) {
+            return false;
+        }
+
+        if (playerName.length() < 4) {
             JOptionPane.showMessageDialog(
                     this,
                     "Your nickname is too short(must be longer than 4)!"
             );
-        } else if (playerName.length() > 16) {
+            return false;
+        }
+
+        if (playerName.length() > 16) {
             JOptionPane.showMessageDialog(
                     this,
                     "Your nickname is too long(must be shorter than 16!"
             );
+            return false;
         }
+        return true;
+    }
+
+    private void createNewGame() {
+        String playerName = enterPlayerName();
+        if (!validateName(playerName)) {
+            return;
+        }
+
+        new Server(HOST_PORT).start();
+        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
+        new Client("localhost", HOST_PORT, playerName).connect();
+    }
+
+    private void joinGame() {
+        String playerName = enterPlayerName();
+        if (!validateName(playerName)) {
+            return;
+        }
+
+        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
+        new Client("localhost", HOST_PORT, playerName).connect();
     }
 }

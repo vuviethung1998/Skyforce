@@ -1,4 +1,4 @@
-package skyforce;
+package skyforce.client.ui.ingamescreem;
 
 import javax.swing.JFrame;
 import java.awt.*;

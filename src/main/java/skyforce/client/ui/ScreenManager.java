@@ -5,7 +5,7 @@ import skyforce.client.ui.waitingroomscreen.WaitingRoomScreen;
 
 import javax.swing.*;
 
-import static skyforce.config.Constants.*;
+import static skyforce.common.Constants.*;
 
 
 public class ScreenManager {
