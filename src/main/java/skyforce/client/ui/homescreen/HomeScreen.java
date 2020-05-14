@@ -2,7 +2,6 @@ package skyforce.client.ui.homescreen;
 
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
-import skyforce.common.EventBuz;
 import skyforce.server.Server;
 
 import javax.swing.*;
@@ -31,7 +30,7 @@ public class HomeScreen extends JPanel implements ActionListener{
         joinGameBtn = new JButton("Join Game");
         quitGameBtn = new JButton("Quit");
 
-        titleLb = new JLabel("FuDuSkyWar", SwingConstants.CENTER);
+        titleLb = new JLabel("Skyforce", SwingConstants.CENTER);
 
         createGameBtn.setBounds(560, 320, 220, 50);
         createGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
@@ -65,13 +64,23 @@ public class HomeScreen extends JPanel implements ActionListener{
     }
 
     private String enterPlayerName() {
-        String name = JOptionPane.showInputDialog(
+        JTextField ip = new JTextField();
+        JTextField host = new JPasswordField();
+        JTextField name = new JPasswordField();
+        Object[] message = {
+                "ip:", ip,
+                "host:", host,
+                "player name:", name
+        };
+        int op = JOptionPane.showConfirmDialog(
                 this,
-                "Enter player name:",
+                message,
                 "Player Name",
-                JOptionPane.QUESTION_MESSAGE
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
         );
-        return name;
+
+        return name.getText();
     }
 
     private boolean validateName(String playerName) {
