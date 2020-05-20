@@ -4,6 +4,9 @@ public class Constants {
     public static final int HOST_PORT = 5000;
     public static final int MAX_ROOM_SIZE = 4;
 
+    public static final int IN_GAME_SCREEN_WIDTH = 500;
+    public static final int IN_GAME_SCREEN_HEIGHT = 600;
+
     public static final int GAME_WIDTH = 400;
     public static final int GAME_HEIGHT = 400;
 

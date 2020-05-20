@@ -1,5 +1,8 @@
 package skyforce.client.ui.ingamescreem;
 
+
+import skyforce.server.GameManager;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

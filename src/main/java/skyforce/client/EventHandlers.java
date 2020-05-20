@@ -1,8 +1,7 @@
 package skyforce.client;
 
 import skyforce.common.EventBuz;
-import skyforce.packet.JoinRoomResponsePacket;
-import skyforce.packet.UpdateRoomPacket;
+import skyforce.packet.*;
 
 public class EventHandlers {
     public static void received(Object p, Client client) {
@@ -13,6 +12,16 @@ public class EventHandlers {
 
         if (p instanceof UpdateRoomPacket) {
             handleUpdateRoomPacket((UpdateRoomPacket) p, client);
+            return;
+        }
+
+        if (p instanceof UpdateGamePacket) {
+            handleUpdateGamePacket((UpdateGamePacket) p, client);
+            return;
+        }
+
+        if (p instanceof StartGameResponsePacket) {
+            handleStartGameResponsePacket((StartGameResponsePacket) p, client);
             return;
         }
     }
@@ -26,6 +35,14 @@ public class EventHandlers {
     }
 
     private static void handleUpdateRoomPacket(UpdateRoomPacket p, Client c) {
+        EventBuz.getInstance().post(p);
+    }
+
+    private static void handleUpdateGamePacket(UpdateGamePacket p, Client c) {
+        EventBuz.getInstance().post(p);
+    }
+
+    private static void handleStartGameResponsePacket(StartGameResponsePacket p, Client c) {
         EventBuz.getInstance().post(p);
     }
 }

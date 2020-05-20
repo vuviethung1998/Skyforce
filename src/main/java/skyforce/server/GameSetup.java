@@ -1,4 +1,7 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.server;
+
+import skyforce.client.ui.ingamescreem.Display;
+import skyforce.client.ui.ingamescreem.LoadImage;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;

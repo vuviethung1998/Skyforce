@@ -1,16 +1,21 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.server;
+
+import skyforce.client.ui.ingamescreem.Bullet;
+import skyforce.client.ui.ingamescreem.Enemy;
+import skyforce.client.ui.ingamescreem.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-class GameManager {
-    private Player player;
+public class GameManager {
+    public Player player;
     public static ArrayList<Bullet> bullets;
     public static ArrayList<Enemy> enemies;
 
     private long current;
     private long delay;
+
     public GameManager() {
 
     }
@@ -73,7 +78,6 @@ class GameManager {
                 enemies.remove(i);
                 i--;
                 player.setHealth(player.getHealth() - 1);
-                System.out.println(player.getHealth());
                 if (player.getHealth() <= 0) {
                     System.out.println("Loss");
                     enemies.clear();

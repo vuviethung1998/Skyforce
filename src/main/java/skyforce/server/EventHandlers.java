@@ -1,15 +1,25 @@
 package skyforce.server;
 
-import skyforce.packet.JoinRoomRequestPacket;
-import skyforce.packet.JoinRoomResponsePacket;
-import skyforce.packet.UpdateRoomPacket;
+import skyforce.packet.*;
 
+import java.util.ArrayList;
 import java.util.Map;
 
-public class EventHandlers {
-    public static void received(Object p, Connection connection) {
+class EventHandlers {
+    static void received(Object p, Connection connection) {
         if (p instanceof JoinRoomRequestPacket) {
             handleJoinRoomRequest((JoinRoomRequestPacket) p, connection);
+            return;
+        }
+
+        if (p instanceof PlayerActionPacket) {
+            handlePlayerAction((PlayerActionPacket) p, connection);
+            return;
+        }
+
+        if (p instanceof StartGameRequestPacket) {
+            handleStartGameRequest((StartGameRequestPacket) p, connection);
+            return;
         }
     }
 
@@ -27,6 +37,27 @@ public class EventHandlers {
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
             Connection c = entry.getValue();
             c.sendObject(update);
+        }
+    }
+
+    private static void handlePlayerAction(PlayerActionPacket p, Connection connection) {
+        System.out.printf("[SERVER] receive PlayerActionPacket: %s\n", connection.getPlayerName());
+        UpdateGamePacket update = new UpdateGamePacket(
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+            Connection c = entry.getValue();
+            c.sendObject(update);
+        }
+    }
+
+    private static void handleStartGameRequest(StartGameRequestPacket p, Connection connection) {
+        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+            Connection c = entry.getValue();
+            c.sendObject(new StartGameResponsePacket());
         }
     }
 }

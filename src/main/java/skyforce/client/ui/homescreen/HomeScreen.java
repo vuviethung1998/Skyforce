@@ -65,8 +65,8 @@ public class HomeScreen extends JPanel implements ActionListener{
 
     private String enterPlayerName() {
         JTextField ip = new JTextField();
-        JTextField host = new JPasswordField();
-        JTextField name = new JPasswordField();
+        JTextField host = new JTextField();
+        JTextField name = new JTextField();
         Object[] message = {
                 "ip:", ip,
                 "host:", host,
@@ -118,7 +118,7 @@ public class HomeScreen extends JPanel implements ActionListener{
 
         new Server(HOST_PORT).start();
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
-        new Client("localhost", HOST_PORT, playerName).connect();
+        Client.connect("localhost", HOST_PORT, playerName);
     }
 
     private void joinGame() {
@@ -128,6 +128,6 @@ public class HomeScreen extends JPanel implements ActionListener{
         }
 
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
-        new Client("localhost", HOST_PORT, playerName).connect();
+        Client.connect("localhost", HOST_PORT, playerName);
     }
 }

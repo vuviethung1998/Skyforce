@@ -1,8 +1,10 @@
 package skyforce.client.ui.waitingroomscreen;
 
 import com.google.common.eventbus.Subscribe;
+import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
 import skyforce.common.EventBuz;
+import skyforce.packet.StartGameRequestPacket;
 import skyforce.packet.UpdateRoomPacket;
 
 import javax.swing.*;
@@ -77,6 +79,7 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startGameBtn) {
             ScreenManager.getInstance().navigate(INGAME_SCREEN);
+            Client.sendObject(new StartGameRequestPacket());
         }
     }
 
@@ -86,5 +89,11 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
             String name = p.getPlayerNames().get(i);
             this.slots.get(i).setText(name);
         }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        EventBuz.getInstance().unregister(this);
     }
 }

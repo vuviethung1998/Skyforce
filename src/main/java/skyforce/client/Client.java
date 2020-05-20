@@ -1,7 +1,6 @@
 package skyforce.client;
 
 import skyforce.packet.JoinRoomRequestPacket;
-import skyforce.server.Server;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -12,19 +11,20 @@ import java.net.SocketException;
 
 
 public class Client implements Runnable{
+    public static Client client;
+
     private String host;
     private int port;
 
-    private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private static Socket socket;
+    private static ObjectOutputStream out;
+    private static ObjectInputStream in;
 
     private boolean running = false;
 
     private int id;
     public String playerName;
 
-    private boolean isServerDied = false;
 
     public Client(String host, int port, String playerName) {
         this.host = host;
@@ -33,16 +33,24 @@ public class Client implements Runnable{
         this.id = -1;
     }
 
-    public void connect() {
+    public static void connect(String host, int port, String playerName) {
         try {
             socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            new Thread(this).start();
+            client = new Client(host, port, playerName);
+            new Thread(client).start();
             sendObject(new JoinRoomRequestPacket(playerName));
-
         } catch (IOException e) {
             System.out.println("[CLIENT] Unable to connect to the server");
+            e.printStackTrace();
+        }
+    }
+
+    public static void sendObject(Object packet) {
+        try {
+            out.writeObject(packet);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -63,7 +71,6 @@ public class Client implements Runnable{
                     close();
                 } catch (EOFException e) {
                     e.printStackTrace();
-                    isServerDied = true;
                     close();
                     System.out.println("[CLIENT] Disconnected from server!");
                 }
@@ -88,11 +95,5 @@ public class Client implements Runnable{
         }
     }
 
-    public void sendObject(Object packet) {
-        try {
-            out.writeObject(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+
 }
