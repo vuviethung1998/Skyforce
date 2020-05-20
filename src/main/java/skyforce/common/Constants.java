@@ -18,7 +18,7 @@ public class Constants {
 
     public static final String HOME_SCREEN = "HomeScreen";
     public static final String WAITING_ROOM_SCREEN = "WaitingRoomScreen";
-    public static final String EXISTED_ROOM_SCREEN = "ExistedRoomScreen";
+    public static final String INGAME_SCREEN = "InGameScreen";
 
     public static final String NORMAL_FONT = "Colonna MT";
 }

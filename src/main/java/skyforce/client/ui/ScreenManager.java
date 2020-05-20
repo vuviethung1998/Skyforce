@@ -1,6 +1,7 @@
 package skyforce.client.ui;
 
 import skyforce.client.ui.homescreen.HomeScreen;
+import skyforce.client.ui.ingamescreem.InGameScreen;
 import skyforce.client.ui.waitingroomscreen.WaitingRoomScreen;
 
 import javax.swing.*;
@@ -48,9 +49,15 @@ public class ScreenManager {
             case WAITING_ROOM_SCREEN:
                 window.getContentPane().add( new WaitingRoomScreen(SCREEN_WIDTH, SCREEN_HEIGHT));
                 break;
+            case INGAME_SCREEN:
+                window.getContentPane().add( new InGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT));
         }
 
         window.revalidate();
         window.repaint();
+    }
+
+    public JFrame getWindow() {
+        return this.window;
     }
 }

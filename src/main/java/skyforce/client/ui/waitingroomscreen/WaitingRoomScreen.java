@@ -1,6 +1,7 @@
 package skyforce.client.ui.waitingroomscreen;
 
 import com.google.common.eventbus.Subscribe;
+import skyforce.client.ui.ScreenManager;
 import skyforce.common.EventBuz;
 import skyforce.packet.UpdateRoomPacket;
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 import static skyforce.common.Constants.*;
 
 public class WaitingRoomScreen extends JPanel implements ActionListener {
+    JButton exitBtn;
+    JButton startGameBtn;
 
     private ArrayList<JLabel> slots;
 
@@ -29,8 +32,8 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
 
     private void initUI() {
         int[] slotLocations = {20, 240, 460, 680};
-        JButton exitBtn = new JButton("Exit Room");
-        JButton startGameBtn = new JButton("Start Game");
+        exitBtn = new JButton("Exit Room");
+        startGameBtn = new JButton("Start Game");
         JSeparator separator = new JSeparator();
 
 
@@ -71,8 +74,10 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
 
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == startGameBtn) {
+            ScreenManager.getInstance().navigate(INGAME_SCREEN);
+        }
     }
 
     @Subscribe
