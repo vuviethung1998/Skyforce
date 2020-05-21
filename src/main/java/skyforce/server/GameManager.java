@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Random;
 
 public class GameManager {
-    public Player player;
     public static ArrayList<Enemy> enemies;
     public static HashMap<Integer, Player> players;
 
@@ -32,7 +31,7 @@ public class GameManager {
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
             Connection connection = entry.getValue();
             Random rand = new Random();
-            players.put(connection.getId(), new Player(rand.nextInt(450), rand.nextInt(450), connection.getId()));
+            players.put(connection.getId(), new Player(rand.nextInt(450), connection.getId()));
         }
     }
 

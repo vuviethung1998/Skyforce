@@ -25,19 +25,19 @@ public class Player implements KeyListener {
     private int health;
     private int score;
 
-    public Player(int x, int y, int connectionId) {
+    public Player(int x, int connectionId) {
         this.x = x;
-        this.y = y;
+        this.y = 0;
         this.connectionId = connectionId;
         this.bullets = new ArrayList<>();
+        this.current = System.nanoTime();
+        this.delay = 100;
+        this.health = 3;
+        this.score = 0;
     }
 
     public void init() {
         Display.frame.addKeyListener(this);
-        current = System.nanoTime();
-        delay = 100;
-        health = 3;
-        score = 0;
     }
 
     public void tick() {

@@ -97,7 +97,6 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         this.enemies.clear();
 
         this.players.addAll(e.players);
-        this.bullets.addAll(e.bullets);
         this.enemies.addAll(e.enemies);
         renderUI();
     }

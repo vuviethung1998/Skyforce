@@ -19,6 +19,4 @@ public class PlayerActionPacket implements Serializable {
         this.action = action;
         this.connectionId = connectionId;
     }
-
-
 }

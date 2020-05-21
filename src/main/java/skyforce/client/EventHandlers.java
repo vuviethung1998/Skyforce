@@ -32,6 +32,7 @@ public class EventHandlers {
                 p.getPlayerName(),
                 p.getId()
         );
+        c.setConnectionId(p.getId());
     }
 
     private static void handleUpdateRoomPacket(UpdateRoomPacket p, Client c) {
