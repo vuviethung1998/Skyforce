@@ -21,11 +21,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class InGameScreen extends JPanel implements ActionListener, KeyListener {
-    private ArrayList<Player> players;
-    private ArrayList<Bullet> bullets;
+    private HashMap<Integer, Player> players;
     private ArrayList<Enemy> enemies;
 
     private static Canvas canvas;
@@ -34,8 +35,7 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         setSize(width, height);
         setVisible(true);
 
-        players = new ArrayList<>();
-        bullets = new ArrayList<>();
+        players = new HashMap<>();
         enemies = new ArrayList<>();
 
         EventBuz.getInstance().register(this);
@@ -55,7 +55,6 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("okok");
         int keycode = e.getKeyCode();
         switch (keycode) {
             case KeyEvent.VK_SPACE:
@@ -82,8 +81,15 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Subscribe
     public void onStartGame(StartGameResponsePacket e) {
-        System.out.println("[CLIENT] onStartGame");
+        System.out.printf("[CLIENT: %s] onStartGame \n", Client.getConnectionId());
         renderCanvas();
+
+        renderUI();
+        renderUI();
+        renderUI();
+        renderUI();
+        renderUI();
+        renderUI();
         renderUI();
         renderUI();
     }
@@ -91,13 +97,10 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Subscribe
     public void onUpdateGame(UpdateGamePacket e) {
-        System.out.println("[CLIENT] onUpdateGame");
-        this.players.clear();
-        this.bullets.clear();
-        this.enemies.clear();
+        System.out.printf("[CLIENT: %s] onUpdateGame \n", Client.getConnectionId());
+        this.players = e.players;
+        this.enemies = e.enemies;
 
-        this.players.addAll(e.players);
-        this.enemies.addAll(e.enemies);
         renderUI();
     }
 
@@ -107,6 +110,8 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         canvas.setPreferredSize(new Dimension(Constants.IN_GAME_SCREEN_WIDTH, Constants.IN_GAME_SCREEN_HEIGHT));
         add(canvas);
         canvas.setVisible(true);
+        this.validate();
+
         LoadImage.init();
     }
 
@@ -128,16 +133,17 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
             }
         }
 
-        for (Player player : players) {
-            player.render(g);
-        }
+        for(Map.Entry<Integer, Player> entry : players.entrySet()) {
+            Player p = entry.getValue();
+            p.render(g);
 
-        for (Bullet bullet : bullets) {
-            bullet.render(g);
+            for (Bullet bullet : Player.bullets) {
+                bullet.render(g);
+            }
+
         }
 
         g.setColor(Color.BLUE);
-        // end of draw
 
         buffer.show();
         g.dispose();

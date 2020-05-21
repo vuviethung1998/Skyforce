@@ -1,5 +1,7 @@
 package skyforce.packet;
 
+import skyforce.client.Client;
+
 import java.io.Serializable;
 
 public class PlayerActionPacket implements Serializable {
@@ -15,8 +17,8 @@ public class PlayerActionPacket implements Serializable {
     public Action action;
     public int connectionId;
 
-    public PlayerActionPacket(Action action, int connectionId) {
+    public PlayerActionPacket(Action action) {
         this.action = action;
-        this.connectionId = connectionId;
+        this.connectionId = Client.getConnectionId();
     }
 }

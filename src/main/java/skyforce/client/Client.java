@@ -22,15 +22,14 @@ public class Client implements Runnable{
 
     private boolean running = false;
 
-    private int connectionId;
-    public String playerName;
+    private static int connectionId;
+    private String playerName;
 
 
     public Client(String host, int port, String playerName) {
         this.host = host;
         this.port = port;
         this.playerName = playerName;
-        this.connectionId = -1;
     }
 
     public static void connect(String host, int port, String playerName) {
@@ -80,9 +79,6 @@ public class Client implements Runnable{
         }
     }
 
-    public void setConnectionId(int id){
-        this.connectionId = id;
-    }
 
     private void close() {
         try {
@@ -99,5 +95,19 @@ public class Client implements Runnable{
         }
     }
 
+    public String getPlayerName() {
+        return this.playerName;
+    }
 
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public static int getConnectionId() {
+        return connectionId;
+    }
+
+    public void setConnectionId(int id){
+        connectionId = id;
+    }
 }

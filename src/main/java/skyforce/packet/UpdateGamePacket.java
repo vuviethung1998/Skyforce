@@ -1,6 +1,5 @@
 package skyforce.packet;
 
-import skyforce.entity.Bullet;
 import skyforce.entity.Enemy;
 import skyforce.entity.Player;
 

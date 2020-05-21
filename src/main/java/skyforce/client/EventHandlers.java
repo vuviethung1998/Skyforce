@@ -28,9 +28,9 @@ public class EventHandlers {
 
     private static void handleJoinRoomResponsePacket(JoinRoomResponsePacket p, Client c) {
         System.out.printf(
-                "[CLIENT] received JoinRoomResponsePacket from server: %s - %d\n",
-                p.getPlayerName(),
-                p.getId()
+                "[CLIENT: %d] received JoinRoomResponsePacket from server: %s\n",
+                p.getId(),
+                p.getPlayerName()
         );
         c.setConnectionId(p.getId());
     }

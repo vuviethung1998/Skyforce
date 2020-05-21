@@ -6,7 +6,6 @@ import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -97,7 +96,7 @@ public class GameManager {
     }
 
     public synchronized void handlePlayerAction(PlayerActionPacket packet){
-        Player player = (Player)players.get(packet.connectionId);
+        Player player = players.get(packet.connectionId);
         switch (packet.action){
             case LEFT_PRESSED:
                 player.setLeft(true);
