@@ -1,17 +1,27 @@
 package skyforce.server;
 
+import skyforce.packet.UpdateGamePacket;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Server implements Runnable{
     private int port;
-    private boolean running;
+    private boolean runServer;
     private ServerSocket server;
 
     public static HashMap<Integer, Connection> connections;
+    public static GameManager gameManager;
+    private static String gameStatus;
+
+    private int fps;
+    private double timePerTick;
+    private double delta;
+    private long current;
 
     public void start() {
         new Thread(this).start();
@@ -19,6 +29,15 @@ public class Server implements Runnable{
 
     public Server(int port) {
         this.port = port;
+        this.gameStatus = "waiting";
+
+        this.fps = 30;
+        this.timePerTick = 1000000000 / fps;
+        this.delta = 0;
+        this.current = System.nanoTime();
+
+        this.gameManager = new GameManager();
+
         try {
             server = new ServerSocket(port);
         } catch (IOException e) {
@@ -30,20 +49,38 @@ public class Server implements Runnable{
 
     @Override
     public void run() {
-        running = true;
+        runServer = true;
         System.out.println("[SERVER] Server started on port: " + port);
 
-        while (running) {
-            try {
-                Socket socket = server.accept();
-                initConnection(socket);
-            } catch (EOFException e) {
-                System.out.println("");
-            }catch (IOException e) {
-                e.printStackTrace();
+        while (runServer) {
+            if(gameStatus.equals("waiting")){
+                try {
+                    Socket socket = server.accept();
+                    initConnection(socket);
+                } catch (EOFException e) {
+                    System.out.println("");
+                }catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(gameStatus.equals("running")) {
+                delta = delta + (System.nanoTime() - current) / timePerTick;
+                current = System.nanoTime();
+                if (delta >= 1) {
+                    UpdateGamePacket updateGamePacket = gameManager.tick();
+                    for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+                        Connection c = entry.getValue();
+                        c.sendObject(updateGamePacket);
+                    }
+                    delta--;
+                }
             }
         }
         shutdown();
+    }
+
+    public static void setGameStatus(String status){
+        gameStatus = status;
     }
 
     private void initConnection(Socket socket) {
@@ -54,7 +91,7 @@ public class Server implements Runnable{
     }
 
     public void shutdown() {
-        running = false;
+        runServer = false;
 
         try {
             server.close();

@@ -1,4 +1,4 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.entity;
 
 import java.awt.*;
 

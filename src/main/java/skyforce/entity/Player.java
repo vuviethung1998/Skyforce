@@ -1,15 +1,21 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.entity;
 
 
+import skyforce.client.ui.ingamescreem.Display;
+import skyforce.client.ui.ingamescreem.LoadImage;
+import skyforce.entity.Bullet;
 import skyforce.server.GameManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Player implements KeyListener {
     private int x;
     private int y;
+    private int connectionId;
+    public static ArrayList<Bullet> bullets;
     private boolean fire;
     private boolean right;
     private boolean left;
@@ -19,9 +25,11 @@ public class Player implements KeyListener {
     private int health;
     private int score;
 
-    public Player(int x, int y) {
+    public Player(int x, int y, int connectionId) {
         this.x = x;
         this.y = y;
+        this.connectionId = connectionId;
+        this.bullets = new ArrayList<>();
     }
 
     public void init() {
@@ -47,11 +55,23 @@ public class Player implements KeyListener {
             if (fire) {
                 long breaks = (System.nanoTime() - current) / 1000000;
                 if (breaks > delay) {
-                    GameManager.bullets.add(new Bullet(x + 11, y + 10));
+                    bullets.add(new Bullet(x + 11, y + 10));
                     current = System.nanoTime();
                 }
             }
         }
+    }
+
+    public void setLeft(boolean bool){
+        left = bool;
+    }
+
+    public void setRight(boolean bool){
+        right = bool;
+    }
+
+    public void setFire(boolean bool){
+        fire = bool;
     }
 
     public void render(Graphics g) {
@@ -101,6 +121,8 @@ public class Player implements KeyListener {
     public int getY() {
         return this.y;
     }
+
+    public int getConnectionId() { return this.connectionId; }
 
     public int getHealth() {
         return this.health;

@@ -1,4 +1,6 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.entity;
+
+import skyforce.client.ui.ingamescreem.LoadImage;
 
 import java.awt.*;
 

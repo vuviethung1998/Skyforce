@@ -1,20 +1,19 @@
 package skyforce.packet;
 
-import skyforce.client.ui.ingamescreem.Bullet;
-import skyforce.client.ui.ingamescreem.Enemy;
-import skyforce.client.ui.ingamescreem.Player;
+import skyforce.entity.Bullet;
+import skyforce.entity.Enemy;
+import skyforce.entity.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UpdateGamePacket implements Serializable {
-    public ArrayList<Player> players;
+    public HashMap<Integer, Player> players;
     public ArrayList<Enemy> enemies;
-    public ArrayList<Bullet> bullets;
 
-    public UpdateGamePacket(ArrayList<Player> players, ArrayList<Enemy> enemies, ArrayList<Bullet> bullets) {
+    public UpdateGamePacket(HashMap<Integer, Player> players, ArrayList<Enemy> enemies) {
         this.players = players;
         this.enemies = enemies;
-        this.bullets = bullets;
     }
 }
