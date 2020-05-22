@@ -51,11 +51,31 @@ class EventHandlers {
     }
 
     private static void handleStartGameRequest(StartGameRequestPacket p, Connection connection) {
+        System.out.printf("[SERVER] receive from [client: %d] StartGamePacket\n", connection.getId());
         Server.gameManager.init();
-        Server.setGameStatus("running");
-        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-            Connection c = entry.getValue();
-            c.sendObject(new StartGameResponsePacket());
+//        Server.setGameStatus("running");
+        System.out.println("running");
+        double delta = 0;
+        long current = System.nanoTime();
+        int fps = 30;
+        double timePerTick = 1000000000 / fps;
+
+        while (true){
+            delta = delta + (System.nanoTime() - current) / timePerTick;
+            current = System.nanoTime();
+            if (delta >= 1) {
+                UpdateGamePacket updateGamePacket = Server.gameManager.tick();
+                for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+                    Connection c = entry.getValue();
+                    c.sendObject(updateGamePacket);
+                }
+                delta--;
+            }
         }
+
+//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+//            Connection c = entry.getValue();
+//            c.sendObject(new StartGameResponsePacket());
+//        }
     }
 }

@@ -9,9 +9,10 @@ import skyforce.server.GameManager;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player implements KeyListener {
+public class Player implements KeyListener, Serializable {
     private int x;
     private int y;
     private int connectionId;

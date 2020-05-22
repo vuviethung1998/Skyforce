@@ -54,9 +54,11 @@ public class Server implements Runnable{
 
         while (runServer) {
             if(gameStatus.equals("waiting")){
+                System.out.println("waiting");
                 try {
                     Socket socket = server.accept();
                     initConnection(socket);
+                    System.out.println("next");
                 } catch (EOFException e) {
                     System.out.println("");
                 }catch (IOException e) {
@@ -64,6 +66,7 @@ public class Server implements Runnable{
                 }
             }
             if(gameStatus.equals("running")) {
+                System.out.println("running");
                 delta = delta + (System.nanoTime() - current) / timePerTick;
                 current = System.nanoTime();
                 if (delta >= 1) {
