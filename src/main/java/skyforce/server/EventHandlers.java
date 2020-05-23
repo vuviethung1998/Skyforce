@@ -52,9 +52,14 @@ class EventHandlers {
 
     private static void handleStartGameRequest(StartGameRequestPacket p, Connection connection) {
         System.out.printf("[SERVER] receive from [client: %d] StartGamePacket\n", connection.getId());
+//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+//            Connection c = entry.getValue();
+//            c.sendObject(new StartGameResponsePacket());
+//        }
+
         Server.gameManager.init();
-//        Server.setGameStatus("running");
         System.out.println("running");
+
         double delta = 0;
         long current = System.nanoTime();
         int fps = 30;
@@ -72,10 +77,5 @@ class EventHandlers {
                 delta--;
             }
         }
-
-//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-//            Connection c = entry.getValue();
-//            c.sendObject(new StartGameResponsePacket());
-//        }
     }
 }

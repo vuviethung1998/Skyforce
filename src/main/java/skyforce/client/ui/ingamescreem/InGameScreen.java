@@ -35,6 +35,8 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         setSize(width, height);
         setVisible(true);
 
+        renderCanvas();
+
         players = new HashMap<>();
         enemies = new ArrayList<>();
 
@@ -54,6 +56,8 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Override
     public void keyPressed(KeyEvent e) {
+        System.out.println("okok");
+
         int keycode = e.getKeyCode();
         switch (keycode) {
             case KeyEvent.VK_SPACE:
@@ -67,6 +71,7 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Override
     public void keyReleased(KeyEvent e) {
+        System.out.println("okok");
         int keycode = e.getKeyCode();
         switch (keycode) {
             case KeyEvent.VK_SPACE:
@@ -78,33 +83,6 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         }
     }
 
-    @Subscribe
-    public void onStartGame(StartGameResponsePacket e) {
-        System.out.printf("[CLIENT: %s] onStartGame \n", Client.getConnectionId());
-        renderCanvas();
-
-        renderUI();
-        renderUI();
-        renderUI();
-        renderUI();
-        renderUI();
-        renderUI();
-        renderUI();
-        renderUI();
-    }
-
-
-    @Subscribe
-    public void onUpdateGame(UpdateGamePacket e) {
-        System.out.printf("[CLIENT: %s] onUpdateGame \n", Client.getConnectionId());
-        this.players = e.players;
-        this.enemies = e.enemies;
-
-        this.players.addAll(e.players);
-        this.enemies.addAll(e.enemies);
-        renderUI();
-    }
-
     private void renderCanvas() {
         canvas = new Canvas();
         canvas.setFocusable(false);
@@ -112,9 +90,19 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         add(canvas);
         canvas.setVisible(true);
         this.validate();
-
         LoadImage.init();
     }
+
+    @Subscribe
+    public void onUpdateGame(UpdateGamePacket e) {
+        System.out.printf("[CLIENT: %s] onUpdateGame \n", Client.getConnectionId());
+        this.players = e.players;
+        this.enemies = e.enemies;
+
+        renderUI();
+    }
+
+
 
     private void renderUI() {
         BufferStrategy buffer = canvas.getBufferStrategy();
@@ -152,11 +140,5 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     private void exitGame() {
         EventBuz.getInstance().unregister(this);
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        ScreenManager.getInstance().getWindow().removeKeyListener(this);
-        super.finalize();
     }
 }
