@@ -43,7 +43,6 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         ScreenManager.getInstance().getWindow().setFocusable(true);
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
     }
@@ -101,6 +100,8 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         this.players = e.players;
         this.enemies = e.enemies;
 
+        this.players.addAll(e.players);
+        this.enemies.addAll(e.enemies);
         renderUI();
     }
 

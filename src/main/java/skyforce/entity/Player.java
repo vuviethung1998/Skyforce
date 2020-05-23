@@ -3,8 +3,6 @@ package skyforce.entity;
 
 import skyforce.client.ui.ingamescreem.Display;
 import skyforce.client.ui.ingamescreem.LoadImage;
-import skyforce.entity.Bullet;
-import skyforce.server.GameManager;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
