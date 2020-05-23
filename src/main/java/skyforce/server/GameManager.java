@@ -48,6 +48,7 @@ public class GameManager {
     private void generateEnemies(){
         long breaks = (System.nanoTime() - current)/1000000;
         if (breaks > delay) {
+            System.out.println("gen enemy");
             for (int i = 0; i < 2; i++) {
                 Random rand = new Random();
                 int randX = rand.nextInt(450);
@@ -61,7 +62,7 @@ public class GameManager {
     private void removeCollisionEntities(){
         for (int i = 0; i < enemies.size(); i++) {
             Enemy e = enemies.get(i);
-            if (e.getX() < 50 || e.getX() > 450 - 25 || e.getY() > 450 - 25 || e.getY() < 50) {
+            if (e.getX() < 50 || e.getX() > 450 - 25 || e.getY() > 0) {
                 enemies.remove(i--);
             }
         }

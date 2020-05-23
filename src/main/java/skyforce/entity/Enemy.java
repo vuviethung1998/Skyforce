@@ -3,8 +3,9 @@ package skyforce.entity;
 import skyforce.client.ui.ingamescreem.LoadImage;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class Enemy {
+public class Enemy implements Serializable {
     private int x;
     private int y;
 
