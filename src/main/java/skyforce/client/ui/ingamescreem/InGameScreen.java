@@ -9,14 +9,11 @@ import skyforce.entity.Bullet;
 import skyforce.entity.Enemy;
 import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
-import skyforce.packet.StartGameResponsePacket;
 import skyforce.packet.UpdateGamePacket;
 
-import javax.swing.*;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -25,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class InGameScreen extends JPanel implements ActionListener, KeyListener {
+public class InGameScreen extends JPanel implements KeyListener {
     private HashMap<Integer, Player> players;
     private ArrayList<Enemy> enemies;
 
@@ -35,18 +32,15 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         setSize(width, height);
         setVisible(true);
 
-        renderCanvas();
-
         players = new HashMap<>();
         enemies = new ArrayList<>();
+
+        renderCanvas();
 
         EventBuz.getInstance().register(this);
         ScreenManager.getInstance().getWindow().addKeyListener(this);
         ScreenManager.getInstance().getWindow().setFocusable(true);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        ScreenManager.getInstance().getWindow().requestFocus();
     }
 
     @Override
@@ -56,9 +50,8 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("okok");
-
         int keycode = e.getKeyCode();
+        System.out.printf("[CLIENT %d] keyPressed %s \n", Client.getConnectionId(), keycode);
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_PRESSED));
@@ -71,8 +64,9 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("okok");
         int keycode = e.getKeyCode();
+        System.out.printf("[CLIENT %d] keyReleased %s \n", Client.getConnectionId(), keycode);
+
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_RELEASED));
@@ -89,7 +83,7 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
         canvas.setPreferredSize(new Dimension(Constants.IN_GAME_SCREEN_WIDTH, Constants.IN_GAME_SCREEN_HEIGHT));
         add(canvas);
         canvas.setVisible(true);
-        this.validate();
+
         LoadImage.init();
     }
 
@@ -101,8 +95,6 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
         renderUI();
     }
-
-
 
     private void renderUI() {
         BufferStrategy buffer = canvas.getBufferStrategy();
@@ -140,5 +132,12 @@ public class InGameScreen extends JPanel implements ActionListener, KeyListener 
 
     private void exitGame() {
         EventBuz.getInstance().unregister(this);
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        ScreenManager.getInstance().getWindow().removeKeyListener(this);
+        EventBuz.getInstance().unregister(this);
+        super.finalize();
     }
 }
