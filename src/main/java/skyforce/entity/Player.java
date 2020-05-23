@@ -26,10 +26,13 @@ public class Player implements KeyListener, Serializable {
 
     public Player(int x, int connectionId) {
         this.x = x;
-        this.y = 0;
+        this.y = 425;
         this.connectionId = connectionId;
         this.bullets = new ArrayList<>();
         this.current = System.nanoTime();
+        this.left = false;
+        this.right = false;
+        this.fire = false;
         this.delay = 100;
         this.health = 3;
         this.score = 0;
