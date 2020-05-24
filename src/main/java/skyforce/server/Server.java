@@ -14,11 +14,10 @@ public class Server implements Runnable{
     private boolean runServer;
     private ServerSocket server;
 
-    public static HashMap<Integer, Connection> connections;
-    public static GameManager gameManager;
+    static HashMap<Integer, Connection> connections;
+    static GameManager gameManager;
     private static String gameStatus;
 
-    private int fps;
     private double timePerTick;
     private double delta;
     private long current;
@@ -29,14 +28,14 @@ public class Server implements Runnable{
 
     public Server(int port) {
         this.port = port;
-        this.gameStatus = "waiting";
+        gameStatus = "waiting";
 
-        this.fps = 30;
+        int fps = 30;
         this.timePerTick = 1000000000 / fps;
         this.delta = 0;
         this.current = System.nanoTime();
 
-        this.gameManager = new GameManager();
+        gameManager = new GameManager();
 
         try {
             server = new ServerSocket(port);
@@ -53,18 +52,18 @@ public class Server implements Runnable{
         System.out.println("[SERVER] Server started on port: " + port);
 
         while (runServer) {
-            if(gameStatus.equals("waiting")){
+            if(gameStatus.equals("waiting")) {
+
                 System.out.println("waiting");
                 try {
                     Socket socket = server.accept();
                     initConnection(socket);
                     System.out.println("next");
-                } catch (EOFException e) {
-                    System.out.println("");
-                }catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
             if(gameStatus.equals("running")) {
                 System.out.println("running");
                 delta = delta + (System.nanoTime() - current) / timePerTick;
@@ -93,7 +92,7 @@ public class Server implements Runnable{
         new Thread(connection).start();
     }
 
-    public void shutdown() {
+    private void shutdown() {
         runServer = false;
 
         try {

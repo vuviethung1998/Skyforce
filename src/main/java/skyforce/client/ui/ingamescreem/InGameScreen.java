@@ -51,29 +51,39 @@ public class InGameScreen extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         int keycode = e.getKeyCode();
-        System.out.printf("[CLIENT %d] keyPressed %s \n", Client.getConnectionId(), keycode);
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_PRESSED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: FIRE_PRESSED\n", Client.getConnectionId());
+                break;
             case KeyEvent.VK_LEFT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.LEFT_PRESSED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: LEFT_PRESSED\n", Client.getConnectionId());
+
+                break;
             case KeyEvent.VK_RIGHT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.RIGHT_PRESSED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: RIGHT_PRESSED\n", Client.getConnectionId());
+                break;
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         int keycode = e.getKeyCode();
-        System.out.printf("[CLIENT %d] keyReleased %s \n", Client.getConnectionId(), keycode);
-
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_RELEASED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: FIRE_RELEASED\n", Client.getConnectionId());
+                break;
             case KeyEvent.VK_LEFT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.LEFT_RELEASED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: LEFT_RELEASED\n", Client.getConnectionId());
+                break;
             case KeyEvent.VK_RIGHT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.RIGHT_RELEASED));
+                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: RIGHT_RELEASED\n", Client.getConnectionId());
+                break;
         }
     }
 
@@ -89,7 +99,6 @@ public class InGameScreen extends JPanel implements KeyListener {
 
     @Subscribe
     public void onUpdateGame(UpdateGamePacket e) {
-        System.out.printf("[CLIENT: %s] onUpdateGame \n", Client.getConnectionId());
         this.players = e.players;
         this.enemies = e.enemies;
 

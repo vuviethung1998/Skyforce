@@ -70,11 +70,11 @@ public class GameManager {
             Player player = entry.getValue();
 
             player.tick();
-            for(int i = 0; i < player.bullets.size(); i++) {
-                Bullet bullet = player.bullets.get(i);
+            for(int i = 0; i < Player.bullets.size(); i++) {
+                Bullet bullet = Player.bullets.get(i);
                 bullet.tick();
                 if (bullet.getY() < 0) {
-                    player.bullets.remove(i--);
+                    Player.bullets.remove(i--);
                 }
 
                 for(int j = 0; j < enemies.size(); j++) {
@@ -90,7 +90,7 @@ public class GameManager {
 
                     if (isCollision(enemy, bullet)) {
                         enemies.remove(j--);
-                        player.bullets.remove(i--);
+                        Player.bullets.remove(i--);
                         player.incScore();
                     }
                 }
@@ -102,12 +102,15 @@ public class GameManager {
         Player player = players.get(packet.connectionId);
         switch (packet.action){
             case LEFT_PRESSED:
+                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: LEFT_PRESSED", packet.connectionId);
                 player.setLeft(true);
                 break;
             case RIGHT_PRESSED:
+                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: RIGHT_PRESSED", packet.connectionId);
                 player.setRight(true);
                 break;
             case FIRE_PRESSED:
+                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: FIRE_PRESSED", packet.connectionId);
                 player.setFire(true);
                 break;
             case LEFT_RELEASED:

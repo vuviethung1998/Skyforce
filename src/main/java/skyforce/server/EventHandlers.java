@@ -1,10 +1,7 @@
 package skyforce.server;
 
-import skyforce.entity.Enemy;
-import skyforce.entity.Player;
 import skyforce.packet.*;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 class EventHandlers {
@@ -45,19 +42,10 @@ class EventHandlers {
     private static void handlePlayerAction(PlayerActionPacket p, Connection connection) {
         System.out.printf("[SERVER] receive from [client: %d] PlayerActionPacket\n", connection.getId());
         Server.gameManager.handlePlayerAction(p);
-
-//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-//            Connection c = entry.getValue();
-//            c.sendObject(update);
-//        }
     }
 
     private static void handleStartGameRequest(StartGameRequestPacket p, Connection connection) {
         System.out.printf("[SERVER] receive from [client: %d] StartGamePacket\n", connection.getId());
-//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-//            Connection c = entry.getValue();
-//            c.sendObject(new StartGameResponsePacket());
-//        }
 
         Server.gameManager.init();
         System.out.println("running");
