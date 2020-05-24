@@ -18,10 +18,6 @@ public class Server implements Runnable{
     static GameManager gameManager;
     private static String gameStatus;
 
-    private double timePerTick;
-    private double delta;
-    private long current;
-
     public void start() {
         new Thread(this).start();
     }
@@ -29,12 +25,6 @@ public class Server implements Runnable{
     public Server(int port) {
         this.port = port;
         gameStatus = "waiting";
-
-        int fps = 30;
-        this.timePerTick = 1000000000 / fps;
-        this.delta = 0;
-        this.current = System.nanoTime();
-
         gameManager = new GameManager();
 
         try {
@@ -64,19 +54,6 @@ public class Server implements Runnable{
                 }
             }
 
-//            if(gameStatus.equals("running")) {
-//                System.out.println("running");
-//                delta = delta + (System.nanoTime() - current) / timePerTick;
-//                current = System.nanoTime();
-//                if (delta >= 1) {
-//                    UpdateGamePacket updateGamePacket = gameManager.tick();
-//                    for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-//                        Connection c = entry.getValue();
-//                        c.sendObject(updateGamePacket);
-//                    }
-//                    delta--;
-//                }
-//            }
         }
         shutdown();
     }

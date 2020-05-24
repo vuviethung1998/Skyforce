@@ -20,6 +20,7 @@ public class Bullet {
     }
 
     public void render(Graphics g) {
+        if (y<50) return;
         g.setColor(Color.BLUE);
         g.fillRect(x, y, Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
     }

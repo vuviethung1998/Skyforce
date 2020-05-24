@@ -54,16 +54,13 @@ public class InGameScreen extends JPanel implements KeyListener {
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_PRESSED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: FIRE_PRESSED\n", Client.getConnectionId());
                 break;
             case KeyEvent.VK_LEFT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.LEFT_PRESSED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: LEFT_PRESSED\n", Client.getConnectionId());
 
                 break;
             case KeyEvent.VK_RIGHT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.RIGHT_PRESSED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: RIGHT_PRESSED\n", Client.getConnectionId());
                 break;
         }
     }
@@ -74,15 +71,12 @@ public class InGameScreen extends JPanel implements KeyListener {
         switch (keycode) {
             case KeyEvent.VK_SPACE:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.FIRE_RELEASED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: FIRE_RELEASED\n", Client.getConnectionId());
                 break;
             case KeyEvent.VK_LEFT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.LEFT_RELEASED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: LEFT_RELEASED\n", Client.getConnectionId());
                 break;
             case KeyEvent.VK_RIGHT:
                 Client.sendObject(new PlayerActionPacket(PlayerActionPacket.Action.RIGHT_RELEASED));
-                System.out.printf( "[CLIENT: %d] sent PlayerActionPacket: RIGHT_RELEASED\n", Client.getConnectionId());
                 break;
         }
     }
@@ -118,7 +112,7 @@ public class InGameScreen extends JPanel implements KeyListener {
         // draw
         g.drawImage(LoadImage.image, 50 ,50, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, null);
         for (Enemy e : enemies) {
-            if (e.getX() >= 50 && e.getX() <= 450 - 25 && e.getY() <= 450 - 25 && e.getY() >= 50) {
+            if (e.getX() >= 50 && e.getX() <= Constants.GAME_WIDTH - 25 && e.getY() <= Constants.GAME_HEIGHT - 25 && e.getY() >= 50) {
                 e.render(g);
             }
         }

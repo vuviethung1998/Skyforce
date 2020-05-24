@@ -30,7 +30,7 @@ public class Player implements KeyListener, Serializable {
         this.x = x;
         this.y = 450;
         this.connectionId = connectionId;
-        this.bullets = new ArrayList<>();
+        bullets = new ArrayList<>();
         this.current = System.nanoTime();
         this.step = 10;
         this.left = false;
@@ -48,12 +48,12 @@ public class Player implements KeyListener, Serializable {
     public void tick() {
         if (health > 0) {
             if (left) {
-                if (x >= Constants.PLAYER_WIDTH + step) {
+                if (x >= 50) {
                     x -= step;
                 }
             }
             if (right) {
-                if (x <= Constants.GAME_WIDTH - Constants.PLAYER_WIDTH - step) {
+                if (x <= Constants.GAME_WIDTH + Constants.PLAYER_WIDTH/2) {
                     x += step;
                 }
             }
@@ -61,7 +61,7 @@ public class Player implements KeyListener, Serializable {
                 System.out.println("fire");
                 long breaks = (System.nanoTime() - current) / 1000000;
                 if (breaks > delay) {
-                    bullets.add(new Bullet(x + 11, y - 10));
+                    bullets.add(new Bullet(x + 11, y + 10));
                     current = System.nanoTime();
                 }
             }

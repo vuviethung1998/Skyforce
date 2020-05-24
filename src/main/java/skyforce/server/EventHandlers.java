@@ -1,8 +1,5 @@
 package skyforce.server;
 
-import skyforce.entity.Bullet;
-import skyforce.entity.Enemy;
-import skyforce.entity.Player;
 import skyforce.packet.*;
 
 import java.util.Map;

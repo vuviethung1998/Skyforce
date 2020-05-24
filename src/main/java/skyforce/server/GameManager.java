@@ -10,12 +10,11 @@ import skyforce.packet.UpdateGamePacket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameManager implements Runnable{
-    public static ArrayList<Enemy> enemies;
-    public static HashMap<Integer, Player> players;
+    private static ArrayList<Enemy> enemies;
+    private static HashMap<Integer, Player> players;
 
     private long current;
     private long delay;
@@ -54,12 +53,6 @@ public class GameManager implements Runnable{
             current = System.nanoTime();
             if (delta >= 1) {
                 UpdateGamePacket updateGamePacket = Server.gameManager.tick();
-                for (Map.Entry<Integer, Player> entry : updateGamePacket.players.entrySet()){
-                    Player player = entry.getValue();
-                    for (Bullet bullet : player.bullets){
-                        System.out.printf("bullet at %d, %d\n", bullet.getX(), bullet.getY());
-                    }
-                }
                 for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
                     Connection c = entry.getValue();
                     c.sendObject(updateGamePacket);
@@ -131,18 +124,14 @@ public class GameManager implements Runnable{
 
     public synchronized void handlePlayerAction(PlayerActionPacket packet){
         Player player = players.get(packet.connectionId);
-        System.out.println(player);
         switch (packet.action){
             case LEFT_PRESSED:
-                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: LEFT_PRESSED", packet.connectionId);
                 player.setLeft(true);
                 break;
             case RIGHT_PRESSED:
-                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: RIGHT_PRESSED", packet.connectionId);
                 player.setRight(true);
                 break;
             case FIRE_PRESSED:
-                System.out.printf("[SERVER] [CLIENT: %d] PlayerActionPacket: FIRE_PRESSED", packet.connectionId);
                 player.setFire(true);
                 break;
             case LEFT_RELEASED:
@@ -159,46 +148,6 @@ public class GameManager implements Runnable{
         }
     }
 
-//    public void render(Graphics g) {
-//        player.render(g);
-//        for (Bullet bullet : bullets) {
-//            bullet.render(g);
-//        }
-
-//        for (Enemy e : enemies) {
-//            if (e.getX() >= 50 && e.getX() <= 450 - 25 && e.getY() <= 450 - 25 && e.getY() >= 50) {
-//                e.render(g);
-//            }
-//        }
-
-//        for (int i = 0; i < enemies.size(); i++) {
-//            Enemy e = enemies.get(i);
-//            if (isCollision(player, e)) {
-//                enemies.remove(i);
-//                i--;
-//                player.setHealth(player.getHealth() - 1);
-//                if (player.getHealth() <= 0) {
-//                    System.out.println("Loss");
-//                    enemies.clear();
-//                }
-//            }
-//
-//            for (int j = 0; j < bullets.size(); j++) {
-//                Bullet b = bullets.get(j);
-//                if (isCollision(e, b)) {
-//                    enemies.remove(i);
-//                    i--;
-//                    bullets.remove(j);
-//                    j--;
-//                    player.incScore();
-//                }
-//            }
-//        }
-
-//        g.setColor(Color.BLUE);
-//        g.drawString("Score: " + player.getScore(), 70, 500);
-//    }
-
     private boolean isCollision(Enemy e, Bullet b) {
         return e.getX() < b.getX() + 6 &&
                 e.getX() + 25 > b.getX() &&
@@ -209,8 +158,8 @@ public class GameManager implements Runnable{
     private boolean isCollision(Player p, Enemy e) {
         return p.getX() - Constants.PLAYER_WIDTH / 2 < e.getX() + Constants.ENEMY_WIDTH / 2 &&
                 p.getX() + Constants.PLAYER_WIDTH / 2 > e.getX() - Constants.ENEMY_WIDTH / 2 &&
-                p.getY() < e.getY();
-//                p.getY() < e.getY() + 25 &&
-//                p.getY() + 30 > e.getY();
+                p.getY() < e.getY() &&
+                p.getY() < e.getY() + 25 &&
+                p.getY() + 30 > e.getY();
     }
 }
