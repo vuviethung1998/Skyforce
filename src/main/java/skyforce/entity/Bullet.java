@@ -1,5 +1,7 @@
 package skyforce.entity;
 
+import skyforce.common.Constants;
+
 import java.awt.*;
 
 public class Bullet {
@@ -19,7 +21,7 @@ public class Bullet {
 
     public void render(Graphics g) {
         g.setColor(Color.BLUE);
-        g.fillRect(x, y, 6, 10);
+        g.fillRect(x, y, Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
     }
 
     public int getX() {

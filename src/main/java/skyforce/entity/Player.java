@@ -3,6 +3,7 @@ package skyforce.entity;
 
 import skyforce.client.ui.ingamescreem.Display;
 import skyforce.client.ui.ingamescreem.LoadImage;
+import skyforce.common.Constants;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -18,6 +19,7 @@ public class Player implements KeyListener, Serializable {
     private boolean fire;
     private boolean right;
     private boolean left;
+    private int step;
 
     private long current;
     private long delay;
@@ -26,10 +28,11 @@ public class Player implements KeyListener, Serializable {
 
     public Player(int x, int connectionId) {
         this.x = x;
-        this.y = 425;
+        this.y = 450;
         this.connectionId = connectionId;
         this.bullets = new ArrayList<>();
         this.current = System.nanoTime();
+        this.step = 10;
         this.left = false;
         this.right = false;
         this.fire = false;
@@ -45,19 +48,20 @@ public class Player implements KeyListener, Serializable {
     public void tick() {
         if (health > 0) {
             if (left) {
-                if (x >= 50) {
-                    x = x - 10;
+                if (x >= Constants.PLAYER_WIDTH + step) {
+                    x -= step;
                 }
             }
             if (right) {
-                if (x <= 450 - 30) {
-                    x = x + 10;
+                if (x <= Constants.GAME_WIDTH - Constants.PLAYER_WIDTH - step) {
+                    x += step;
                 }
             }
             if (fire) {
+                System.out.println("fire");
                 long breaks = (System.nanoTime() - current) / 1000000;
                 if (breaks > delay) {
-                    bullets.add(new Bullet(x + 11, y + 10));
+                    bullets.add(new Bullet(x + 11, y - 10));
                     current = System.nanoTime();
                 }
             }
@@ -78,7 +82,7 @@ public class Player implements KeyListener, Serializable {
 
     public void render(Graphics g) {
         if (health > 0) {
-            g.drawImage(LoadImage.player, x, y, 30, 30, null);
+            g.drawImage(LoadImage.player, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
         }
     }
 

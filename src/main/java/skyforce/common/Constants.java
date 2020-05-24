@@ -22,6 +22,12 @@ public class Constants {
     public static final String HOME_SCREEN = "HomeScreen";
     public static final String WAITING_ROOM_SCREEN = "WaitingRoomScreen";
     public static final String INGAME_SCREEN = "InGameScreen";
+    public static final int PLAYER_WIDTH = 30;
+    public static final int PLAYER_HEIGHT = 30;
+    public static final int ENEMY_WIDTH = 25;
+    public static final int ENEMY_HEIGHT = 25;
+    public static final int BULLET_WIDTH = 6;
+    public static final int BULLET_HEIGHT = 10;
 
     public static final String NORMAL_FONT = "Colonna MT";
 }

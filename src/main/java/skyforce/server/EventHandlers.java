@@ -1,5 +1,8 @@
 package skyforce.server;
 
+import skyforce.entity.Bullet;
+import skyforce.entity.Enemy;
+import skyforce.entity.Player;
 import skyforce.packet.*;
 
 import java.util.Map;
@@ -48,24 +51,6 @@ class EventHandlers {
         System.out.printf("[SERVER] receive from [client: %d] StartGamePacket\n", connection.getId());
 
         Server.gameManager.init();
-        System.out.println("running");
-
-        double delta = 0;
-        long current = System.nanoTime();
-        int fps = 30;
-        double timePerTick = 1000000000 / fps;
-
-        while (true){
-            delta = delta + (System.nanoTime() - current) / timePerTick;
-            current = System.nanoTime();
-            if (delta >= 1) {
-                UpdateGamePacket updateGamePacket = Server.gameManager.tick();
-                for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-                    Connection c = entry.getValue();
-                    c.sendObject(updateGamePacket);
-                }
-                delta--;
-            }
-        }
+        new Thread(Server.gameManager).start();
     }
 }

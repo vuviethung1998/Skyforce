@@ -64,19 +64,19 @@ public class Server implements Runnable{
                 }
             }
 
-            if(gameStatus.equals("running")) {
-                System.out.println("running");
-                delta = delta + (System.nanoTime() - current) / timePerTick;
-                current = System.nanoTime();
-                if (delta >= 1) {
-                    UpdateGamePacket updateGamePacket = gameManager.tick();
-                    for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-                        Connection c = entry.getValue();
-                        c.sendObject(updateGamePacket);
-                    }
-                    delta--;
-                }
-            }
+//            if(gameStatus.equals("running")) {
+//                System.out.println("running");
+//                delta = delta + (System.nanoTime() - current) / timePerTick;
+//                current = System.nanoTime();
+//                if (delta >= 1) {
+//                    UpdateGamePacket updateGamePacket = gameManager.tick();
+//                    for (Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+//                        Connection c = entry.getValue();
+//                        c.sendObject(updateGamePacket);
+//                    }
+//                    delta--;
+//                }
+//            }
         }
         shutdown();
     }
