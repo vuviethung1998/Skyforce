@@ -10,6 +10,7 @@ import skyforce.entity.Enemy;
 import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
+import skyforce.server.GameManager;
 
 
 import javax.swing.*;
@@ -23,17 +24,11 @@ import java.util.Map;
 
 
 public class InGameScreen extends JPanel implements KeyListener {
-    private HashMap<Integer, Player> players;
-    private ArrayList<Enemy> enemies;
-
     private static Canvas canvas;
 
     public InGameScreen(int width, int height) {
         setSize(width, height);
         setVisible(true);
-
-        players = new HashMap<>();
-        enemies = new ArrayList<>();
 
         renderCanvas();
 
@@ -93,13 +88,10 @@ public class InGameScreen extends JPanel implements KeyListener {
 
     @Subscribe
     public void onUpdateGame(UpdateGamePacket e) {
-        this.players = e.players;
-        this.enemies = e.enemies;
-
-        renderUI();
+        renderUI(e);
     }
 
-    private void renderUI() {
+    private void renderUI(UpdateGamePacket p) {
         BufferStrategy buffer = canvas.getBufferStrategy();
         if (buffer == null) {
             canvas.createBufferStrategy(3);
@@ -111,20 +103,19 @@ public class InGameScreen extends JPanel implements KeyListener {
 
         // draw
         g.drawImage(LoadImage.image, 50 ,50, Constants.GAME_WIDTH, Constants.GAME_HEIGHT, null);
-        for (Enemy e : enemies) {
-            if (e.getX() >= 50 && e.getX() <= Constants.GAME_WIDTH - 25 && e.getY() <= Constants.GAME_HEIGHT - 25 && e.getY() >= 50) {
+        for (Enemy e : p.enemies) {
+            if (e.getX() >= 50 && e.getX() <= Constants.GAME_WIDTH - 25 && e.getY() <= Constants.GAME_HEIGHT + 50 && e.getY() >= 50) {
                 e.render(g);
             }
         }
 
-        for(Map.Entry<Integer, Player> entry : players.entrySet()) {
-            Player p = entry.getValue();
-            p.render(g);
+        for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
+            Player player = entry.getValue();
+            player.render(g);
+        }
 
-            for (Bullet bullet : Player.bullets) {
-                bullet.render(g);
-            }
-
+        for (Bullet bullet : p.bullets) {
+            bullet.render(g);
         }
 
         g.setColor(Color.BLUE);

@@ -7,11 +7,12 @@ import java.io.IOException;
 public class LoadImage {
     public static BufferedImage image;
     public static BufferedImage entities;
-    public static BufferedImage enemy, player;
+    public static BufferedImage enemy, player, animated;
 
     public static void init() {
        image = imageLoader("/whte.png");
        entities = imageLoader("/airplane.png");
+       animated = imageLoader("/plane-animated-1.png");
        enemy = entities.getSubimage(0, 0,85, 90);
        player = entities.getSubimage(85, 0, 95, 90);
     }

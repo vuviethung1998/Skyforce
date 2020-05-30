@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class GameManager implements Runnable{
     private static ArrayList<Enemy> enemies;
     private static HashMap<Integer, Player> players;
+    public static ArrayList<Bullet> bullets;
 
     private long current;
     private long delay;
@@ -22,6 +24,7 @@ public class GameManager implements Runnable{
     public GameManager() {
         players = new HashMap<>();
         enemies = new ArrayList<>();
+        bullets = new ArrayList<>();
 
         delay = 800;
         current = System.nanoTime();
@@ -70,7 +73,7 @@ public class GameManager implements Runnable{
         }
 
         this.removeCollisionEntities();
-        return new UpdateGamePacket(players, enemies);
+        return new UpdateGamePacket(players, enemies, bullets);
     }
 
     private void generateEnemies(){
@@ -90,16 +93,17 @@ public class GameManager implements Runnable{
             }
         }
 
+        for (Enemy e: enemies) {
+            e.tick();
+        }
+
+        for (Bullet b: bullets) {
+            b.tick();
+        }
+
         for(Map.Entry<Integer, Player> entry: players.entrySet()){
             Player player = entry.getValue();
-
             player.tick();
-            for(int i = 0; i < Player.bullets.size(); i++) {
-                Bullet bullet = Player.bullets.get(i);
-                bullet.tick();
-                if (bullet.getY() < 0) {
-                    Player.bullets.remove(i--);
-                }
 
                 for(int j = 0; j < enemies.size(); j++) {
                     Enemy enemy = enemies.get(j);
@@ -112,11 +116,18 @@ public class GameManager implements Runnable{
                         }
                     }
 
-                    if (isCollision(enemy, bullet)) {
-                        enemies.remove(j--);
-                        Player.bullets.remove(i--);
-                        player.incScore();
-                    }
+                    for(int i = 0; i < GameManager.bullets.size(); i++) {
+                        Bullet bullet = GameManager.bullets.get(i);
+
+                        if (bullet.getY() < 0) {
+                            GameManager.bullets.remove(i--);
+                        }
+
+                        if (isCollision(enemy, bullet)) {
+                            enemies.remove(j--);
+                            GameManager.bullets.remove(i--);
+                            player.incScore();
+                        }
                 }
             }
         }
@@ -156,9 +167,8 @@ public class GameManager implements Runnable{
     }
 
     private boolean isCollision(Player p, Enemy e) {
-        return p.getX() - Constants.PLAYER_WIDTH / 2 < e.getX() + Constants.ENEMY_WIDTH / 2 &&
-                p.getX() + Constants.PLAYER_WIDTH / 2 > e.getX() - Constants.ENEMY_WIDTH / 2 &&
-                p.getY() < e.getY() &&
+        return p.getX() < e.getX() + 25 &&
+                p.getX() + 30 > e.getX() &&
                 p.getY() < e.getY() + 25 &&
                 p.getY() + 30 > e.getY();
     }

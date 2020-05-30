@@ -1,9 +1,12 @@
 package skyforce.entity;
 
 
+import skyforce.client.Client;
 import skyforce.client.ui.ingamescreem.Display;
 import skyforce.client.ui.ingamescreem.LoadImage;
 import skyforce.common.Constants;
+import skyforce.server.GameManager;
+import skyforce.server.Server;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -15,7 +18,6 @@ public class Player implements KeyListener, Serializable {
     private int x;
     private int y;
     private int connectionId;
-    public static ArrayList<Bullet> bullets;
     private boolean fire;
     private boolean right;
     private boolean left;
@@ -28,9 +30,8 @@ public class Player implements KeyListener, Serializable {
 
     public Player(int x, int connectionId) {
         this.x = x;
-        this.y = 450;
+        this.y = Constants.GAME_HEIGHT + Constants.PLAYER_WIDTH;
         this.connectionId = connectionId;
-        bullets = new ArrayList<>();
         this.current = System.nanoTime();
         this.step = 10;
         this.left = false;
@@ -61,7 +62,7 @@ public class Player implements KeyListener, Serializable {
                 System.out.println("fire");
                 long breaks = (System.nanoTime() - current) / 1000000;
                 if (breaks > delay) {
-                    bullets.add(new Bullet(x + 11, y + 10));
+                    GameManager.bullets.add(new Bullet(x + 11, y ));
                     current = System.nanoTime();
                 }
             }
@@ -82,9 +83,18 @@ public class Player implements KeyListener, Serializable {
 
     public void render(Graphics g) {
         if (health > 0) {
-            g.drawImage(LoadImage.player, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
+            if (isMe()) {
+                g.drawImage(LoadImage.animated, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
+            } else {
+                g.drawImage(LoadImage.player, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
+            }
         }
     }
+
+    private boolean isMe() {
+        return connectionId == Client.getConnectionId();
+    }
+
 
 
     @Override

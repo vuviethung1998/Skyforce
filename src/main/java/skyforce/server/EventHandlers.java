@@ -49,5 +49,10 @@ class EventHandlers {
 
         Server.gameManager.init();
         new Thread(Server.gameManager).start();
+
+        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
+            Connection c = entry.getValue();
+            c.sendObject(new StartGameResponsePacket());
+        }
     }
 }
