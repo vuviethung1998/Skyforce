@@ -3,6 +3,7 @@ package skyforce.entity;
 
 import skyforce.client.Client;
 import skyforce.client.ui.ingamescreem.Display;
+import skyforce.client.ui.ingamescreem.HelicopterImageLoader;
 import skyforce.client.ui.ingamescreem.LoadImage;
 import skyforce.common.Constants;
 import skyforce.server.GameManager;
@@ -84,7 +85,7 @@ public class Player implements KeyListener, Serializable {
     public void render(Graphics g) {
         if (health > 0) {
             if (isMe()) {
-                g.drawImage(LoadImage.animated, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
+                g.drawImage(HelicopterImageLoader.getPlaneFrame(), x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
             } else {
                 g.drawImage(LoadImage.player, x, y, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, null);
             }

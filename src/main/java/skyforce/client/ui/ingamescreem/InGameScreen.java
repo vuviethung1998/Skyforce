@@ -84,6 +84,7 @@ public class InGameScreen extends JPanel implements KeyListener {
         canvas.setVisible(true);
 
         LoadImage.init();
+        HelicopterImageLoader.init();
     }
 
     @Subscribe

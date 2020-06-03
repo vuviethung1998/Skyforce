@@ -1,5 +1,7 @@
 package skyforce.entity;
 
+import skyforce.client.ui.ingamescreem.HelicopterImageLoader;
+import skyforce.client.ui.ingamescreem.LoadImage;
 import skyforce.common.Constants;
 
 import java.awt.*;
@@ -22,8 +24,7 @@ public class Bullet  implements Serializable {
 
     public void render(Graphics g) {
         if (y<50) return;
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, Constants.BULLET_WIDTH, Constants.BULLET_HEIGHT);
+        g.drawImage(LoadImage.bullet, x, y, Constants.BULLET_WIDTH,Constants.BULLET_HEIGHT, null);
     }
 
     public int getX() {
