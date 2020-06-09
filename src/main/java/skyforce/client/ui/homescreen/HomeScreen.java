@@ -116,7 +116,7 @@ public class HomeScreen extends JPanel implements ActionListener{
             return;
         }
 
-        new Server(HOST_PORT).start();
+        Server.start(HOST_PORT);
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
         Client.connect("localhost", HOST_PORT, playerName);
     }

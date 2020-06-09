@@ -10,6 +10,7 @@ import skyforce.entity.Enemy;
 import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
+import skyforce.packet.YouDiePacket;
 import skyforce.server.GameManager;
 
 
@@ -120,13 +121,28 @@ public class InGameScreen extends JPanel implements KeyListener {
         }
 
         g.setColor(Color.BLUE);
+        int count = 0;
+        for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
+            count++;
+            Player player = entry.getValue();
+            g.drawString(String.format(
+                    "%-20s score: %d -- health: %d",
+                    player.getName(),
+                    player.getScore(),
+                    player.getHealth()
+            ), 70, 530 + count * 12);
+        }
 
         buffer.show();
         g.dispose();
     }
 
-    private void exitGame() {
+    @Subscribe
+    private void onDie(YouDiePacket p) {
+        Client.setRunning(false);
+        ScreenManager.getInstance().getWindow().removeKeyListener(this);
         EventBuz.getInstance().unregister(this);
+        ScreenManager.getInstance().navigate(Constants.HOME_SCREEN);
     }
 
     @Override

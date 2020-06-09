@@ -93,12 +93,11 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
 
     @Subscribe
     public void onStartGame(StartGameResponsePacket p) {
-        ScreenManager.getInstance().navigate(INGAME_SCREEN);
-    }
-
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        EventBuz.getInstance().unregister(this);
+        if (p.getOk()) {
+            ScreenManager.getInstance().navigate(INGAME_SCREEN);
+            System.out.printf("[Client %d] start Game\n", Client.getConnectionId());
+            return;
+        }
+        System.out.printf("[Client %d] can not start Game\n", Client.getConnectionId());
     }
 }

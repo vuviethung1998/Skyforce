@@ -1,29 +1,34 @@
 package skyforce.server;
 
-import skyforce.packet.UpdateGamePacket;
-
-import java.io.EOFException;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Server implements Runnable{
     private int port;
     private boolean runServer;
-    private ServerSocket server;
+    private static ServerSocket server;
 
     static HashMap<Integer, Connection> connections;
     static GameManager gameManager;
-    private static String gameStatus;
+    public static String gameStatus;
 
-    public void start() {
-        new Thread(this).start();
+    public static void start(int port) {
+        if (server == null) {
+            new Thread(new Server(port)).start();
+        }
     }
 
     public Server(int port) {
         this.port = port;
+        connections = new HashMap<>();
+    }
+
+
+    @Override
+    public void run() {
+        runServer = true;
         gameStatus = "waiting";
         gameManager = new GameManager();
 
@@ -32,13 +37,7 @@ public class Server implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        connections = new HashMap<>();
-    }
 
-
-    @Override
-    public void run() {
-        runServer = true;
         System.out.println("[SERVER] Server started on port: " + port);
 
         while (runServer) {
@@ -69,7 +68,7 @@ public class Server implements Runnable{
         new Thread(connection).start();
     }
 
-    private void shutdown() {
+    public void shutdown() {
         runServer = false;
 
         try {

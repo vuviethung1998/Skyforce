@@ -6,40 +6,40 @@ import skyforce.entity.Enemy;
 import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
+import skyforce.packet.YouDiePacket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class GameManager implements Runnable{
     private static ArrayList<Enemy> enemies;
-    private static HashMap<Integer, Player> players;
+    public static HashMap<Integer, Player> players;
     public static ArrayList<Bullet> bullets;
+    public static boolean running;
 
     private long current;
     private long delay;
 
     public GameManager() {
+
+    }
+
+    public void init(){
         players = new HashMap<>();
         enemies = new ArrayList<>();
         bullets = new ArrayList<>();
 
         delay = 800;
         current = System.nanoTime();
-    }
+        running = true;
 
-    public void init(){
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
             Connection connection = entry.getValue();
             int randX = ThreadLocalRandom.current().nextInt(Constants.PLAYER_WIDTH, Constants.GAME_WIDTH - Constants.PLAYER_WIDTH);
-            players.put(connection.getId(), new Player(randX, connection.getId()));
+            players.put(connection.getId(), new Player(randX, connection.getId(), connection.getPlayerName()));
         }
-    }
-
-    public void start() {
-        new Thread(this).start();
     }
 
     @Override
@@ -51,7 +51,12 @@ public class GameManager implements Runnable{
         int fps = 30;
         double timePerTick = 1000000000 / fps;
 
-        while (true){
+        while (running){
+            if (players.size() == 0) {
+                running = false;
+                Server.setGameStatus("waiting");
+                System.out.println("[SERVER] GameManager Stop");
+            }
             delta = delta + (System.nanoTime() - current) / timePerTick;
             current = System.nanoTime();
             if (delta >= 1) {
@@ -88,7 +93,7 @@ public class GameManager implements Runnable{
     private void removeCollisionEntities(){
         for (int i = 0; i < enemies.size(); i++) {
             Enemy e = enemies.get(i);
-            if (e.getX() < Constants.ENEMY_WIDTH || e.getX() > Constants.GAME_WIDTH - Constants.ENEMY_WIDTH || e.getY() > Constants.GAME_HEIGHT) {
+            if (e.getX() < Constants.ENEMY_WIDTH || e.getX() > Constants.GAME_WIDTH - Constants.ENEMY_WIDTH || e.getY() > Constants.GAME_HEIGHT + 20) {
                 enemies.remove(i--);
             }
         }
@@ -105,29 +110,33 @@ public class GameManager implements Runnable{
             Player player = entry.getValue();
             player.tick();
 
-                for(int j = 0; j < enemies.size(); j++) {
-                    Enemy enemy = enemies.get(j);
-                    if (isCollision(player, enemy)) {
-                        enemies.remove(j--);
-                        player.setHealth(player.getHealth() - 1);
-                        if (player.getHealth() <= 0) {
-                            players.remove(player.getConnectionId());
-                            System.out.println("Loss");
+            for(int j = 0; j < enemies.size(); j++) {
+                Enemy enemy = enemies.get(j);
+                if (isCollision(player, enemy)) {
+                    enemies.remove(j--);
+                    player.setHealth(player.getHealth() - 1);
+                    if (player.getHealth() <= 0) {
+                        for(Map.Entry<Integer, Connection> connectionEntry: Server.connections.entrySet()) {
+                            Connection c = connectionEntry.getValue();
+                            if (c.getId() == player.getConnectionId()) {
+                                c.sendObject(new YouDiePacket());
+                            }
                         }
                     }
+                }
 
-                    for(int i = 0; i < GameManager.bullets.size(); i++) {
-                        Bullet bullet = GameManager.bullets.get(i);
+                for(int i = 0; i < GameManager.bullets.size(); i++) {
+                    Bullet bullet = GameManager.bullets.get(i);
 
-                        if (bullet.getY() < 0) {
-                            GameManager.bullets.remove(i--);
-                        }
+                    if (bullet.getY() < 0) {
+                        GameManager.bullets.remove(i--);
+                    }
 
-                        if (isCollision(enemy, bullet)) {
-                            enemies.remove(j--);
-                            GameManager.bullets.remove(i--);
-                            player.incScore();
-                        }
+                    if (isCollision(enemy, bullet)) {
+                        enemies.remove(j--);
+                        GameManager.bullets.remove(i--);
+                        player.incScore();
+                    }
                 }
             }
         }
@@ -172,4 +181,6 @@ public class GameManager implements Runnable{
                 p.getY() < e.getY() + 25 &&
                 p.getY() + 30 > e.getY();
     }
+
+
 }
