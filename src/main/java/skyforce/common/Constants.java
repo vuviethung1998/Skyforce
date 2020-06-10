@@ -29,5 +29,7 @@ public class Constants {
     public static final int BULLET_WIDTH = 6;
     public static final int BULLET_HEIGHT = 10;
 
+    public static final int NULL_CONNECTION = -1;
+
     public static final String NORMAL_FONT = "Colonna MT";
 }

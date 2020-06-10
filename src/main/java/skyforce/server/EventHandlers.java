@@ -20,6 +20,11 @@ class EventHandlers {
             handleStartGameRequest((StartGameRequestPacket) p, connection);
             return;
         }
+
+        if (p instanceof ReadyPacket){
+            handleReadyPacket((ReadyPacket) p, connection);
+            return;
+        }
     }
 
     private static void handleJoinRoomRequest(JoinRoomRequestPacket p, Connection connection) {
@@ -30,7 +35,7 @@ class EventHandlers {
         UpdateRoomPacket update = new UpdateRoomPacket();
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
             Connection c = entry.getValue();
-            update.add(c.getPlayerName());
+            update.addConnection(c.getId(), c.getPlayerName(), false);
         }
 
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
@@ -65,5 +70,9 @@ class EventHandlers {
             Connection c = entry.getValue();
             c.sendObject(new StartGameResponsePacket(true));
         }
+    }
+
+    private static void handleReadyPacket(ReadyPacket p, Connection connection){
+        System.out.printf("[SERVER] receive from [client: %d] ReadyPacket\n", connection.getId());
     }
 }

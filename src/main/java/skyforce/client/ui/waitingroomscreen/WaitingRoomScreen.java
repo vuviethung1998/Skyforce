@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
 import skyforce.common.EventBuz;
+import skyforce.packet.ReadyPacket;
 import skyforce.packet.StartGameRequestPacket;
 import skyforce.packet.StartGameResponsePacket;
 import skyforce.packet.UpdateRoomPacket;
@@ -20,11 +21,18 @@ import static skyforce.common.Constants.*;
 public class WaitingRoomScreen extends JPanel implements ActionListener {
     JButton exitBtn;
     JButton startGameBtn;
+    JButton readyBtn;
 
     private ArrayList<JLabel> slots;
+    private ArrayList<JLabel> readySlots;
+    private ArrayList<JPanel> readyBoxes;
+    private ArrayList<Integer> connections;
 
     public WaitingRoomScreen(int width, int height) {
         this.slots = new ArrayList<>();
+        this.readySlots = new ArrayList<>();
+        this.readyBoxes = new ArrayList<>();
+        this.connections = new ArrayList<>();
         setSize(width, height);
         setLayout(null);
         initUI();
@@ -37,16 +45,20 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         int[] slotLocations = {20, 240, 460, 680};
         exitBtn = new JButton("Exit Room");
         startGameBtn = new JButton("Start Game");
+        readyBtn = new JButton("Ready");
         JSeparator separator = new JSeparator();
 
         exitBtn.setBounds(20, 540, 220, 50);
         exitBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 14));
         startGameBtn.setBounds(330, 540, 220, 50);
         startGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 26));
+        readyBtn.setBounds(650, 540, 220, 50);
+        readyBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 26));
         separator.setBounds(20, 525, 860, 10);
 
         exitBtn.addActionListener(this);
         startGameBtn.addActionListener(this);
+        readyBtn.addActionListener(this);
 
         for (int i = 0; i < slotLocations.length; i++) {
             JPanel slot = createPlayerSlot(slotLocations[i], 210);
@@ -55,6 +67,7 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
 
         add(exitBtn);
         add(startGameBtn);
+        add(readyBtn);
         add(separator);
     }
 
@@ -74,6 +87,7 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         ret.add(name);
         ret.add(readyPanel);
         this.slots.add(name);
+        this.connections.add(NULL_CONNECTION);
         return ret;
     }
 
@@ -83,30 +97,36 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         p.setSize(150, 100);
         p.setBorder(new LineBorder(Color.BLACK));
         p.setBounds(0, 0, 200, 50);
-        JButton readyButton = new JButton("Ready");
-        readyButton.setBounds(0, 0, 150, 50);
+        JLabel readySlot = new JLabel("", SwingConstants.CENTER);
+        readySlot.setBounds(0, 0, 150, 50);
+        this.readySlots.add(readySlot);
         JPanel box = new JPanel();
         box.setBorder(new LineBorder(Color.BLACK));
         box.setBounds(150, 0, 50, 50);
-        ImageIcon icon = new ImageIcon("/success-tick.png");
-        JLabel thumb = new JLabel();
-        thumb.setIcon(icon);
-        box.add(thumb);
-        p.add(readyButton);
+        this.readyBoxes.add(box);
+        p.add(readySlot);
         p.add(box);
         return  p;
     }
-
-//    @Override
-//    protected void paintComponent(Graphics graphics) {
-//        super.paintComponent(graphics);
-//        graphics.drawImage(new Image(), 0, 0, 50, 50,null);
-//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startGameBtn) {
             Client.sendObject(new StartGameRequestPacket());
+        }
+        if (e.getSource() == readyBtn){
+            for(int i = 0; i < readySlots.size(); i++){
+                if(this.connections.get(i) == Client.getConnectionId()){
+                    if(!this.readySlots.get(i).getText().equals("Ready")){
+                        this.readySlots.get(i).setText("Ready");
+                        this.readyBoxes.get(i).setBackground(Color.GREEN);
+                    } else {
+                        this.readySlots.get(i).setText("");
+                        this.readyBoxes.get(i).setBackground(Color.WHITE);
+                    }
+                    Client.sendObject(new ReadyPacket(Client.getPlayerName()));
+                }
+            }
         }
     }
 

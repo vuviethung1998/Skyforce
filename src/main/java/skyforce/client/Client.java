@@ -23,13 +23,13 @@ public class Client implements Runnable{
     private static boolean running = false;
 
     private static int connectionId;
-    private String playerName;
+    private static String playerName;
 
 
     public Client(String host, int port, String playerName) {
         this.host = host;
         this.port = port;
-        this.playerName = playerName;
+        Client.playerName = playerName;
     }
 
     public static void connect(String host, int port, String playerName) {
@@ -96,8 +96,8 @@ public class Client implements Runnable{
         }
     }
 
-    public String getPlayerName() {
-        return this.playerName;
+    public static String getPlayerName() {
+        return Client.playerName;
     }
 
     public void setPlayerName(String playerName) {
