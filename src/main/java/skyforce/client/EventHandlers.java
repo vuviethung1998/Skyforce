@@ -24,6 +24,11 @@ public class EventHandlers {
             handleStartGameResponsePacket((StartGameResponsePacket) p, client);
             return;
         }
+
+        if (p instanceof YouDiePacket) {
+            EventBuz.getInstance().post(p);
+            return;
+        }
     }
 
     private static void handleJoinRoomResponsePacket(JoinRoomResponsePacket p, Client c) {

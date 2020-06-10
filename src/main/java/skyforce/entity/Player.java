@@ -2,20 +2,16 @@ package skyforce.entity;
 
 
 import skyforce.client.Client;
-import skyforce.client.ui.ingamescreem.Display;
 import skyforce.client.ui.ingamescreem.HelicopterImageLoader;
 import skyforce.client.ui.ingamescreem.LoadImage;
 import skyforce.common.Constants;
 import skyforce.server.GameManager;
-import skyforce.server.Server;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.Serializable;
-import java.util.ArrayList;
 
-public class Player implements KeyListener, Serializable {
+public class Player implements Serializable {
+    private String name;
     private int x;
     private int y;
     private int connectionId;
@@ -29,7 +25,8 @@ public class Player implements KeyListener, Serializable {
     private int health;
     private int score;
 
-    public Player(int x, int connectionId) {
+    public Player(int x, int connectionId, String name) {
+        this.name = name;
         this.x = x;
         this.y = Constants.GAME_HEIGHT + Constants.PLAYER_WIDTH;
         this.connectionId = connectionId;
@@ -41,10 +38,6 @@ public class Player implements KeyListener, Serializable {
         this.delay = 100;
         this.health = 3;
         this.score = 0;
-    }
-
-    public void init() {
-        Display.frame.addKeyListener(this);
     }
 
     public void tick() {
@@ -96,41 +89,6 @@ public class Player implements KeyListener, Serializable {
         return connectionId == Client.getConnectionId();
     }
 
-
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int keycode = e.getKeyCode();
-        if (keycode == KeyEvent.VK_LEFT) {
-            left = true;
-        }
-        if (keycode == KeyEvent.VK_RIGHT) {
-            right = true;
-        }
-        if (keycode == KeyEvent.VK_SPACE) {
-            fire = true;
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int keycode = e.getKeyCode();
-        if (keycode == KeyEvent.VK_LEFT) {
-            left = false;
-        }
-        if (keycode == KeyEvent.VK_RIGHT) {
-            right = false;
-        }
-        if (keycode == KeyEvent.VK_SPACE) {
-            fire = false;
-        }
-    }
-
     public int getX() {
         return this.x;
     }
@@ -155,5 +113,9 @@ public class Player implements KeyListener, Serializable {
 
     public void incScore() {
         this.score = this.score + 1;
+    }
+
+    public String getName() {
+        return this.name;
     }
 }

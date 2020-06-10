@@ -20,7 +20,7 @@ public class Client implements Runnable{
     private static ObjectOutputStream out;
     private static ObjectInputStream in;
 
-    private boolean running = false;
+    private static boolean running = false;
 
     private static int connectionId;
     private String playerName;
@@ -69,11 +69,12 @@ public class Client implements Runnable{
                     e.printStackTrace();
                     close();
                 } catch (EOFException e) {
-                    e.printStackTrace();
                     close();
+                    e.printStackTrace();
                     System.out.println("[CLIENT] Disconnected from server!");
                 }
             }
+            close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,4 +111,9 @@ public class Client implements Runnable{
     public void setConnectionId(int id){
         connectionId = id;
     }
+
+    public static void setRunning(boolean run) {
+        running = run;
+    }
+
 }

@@ -1,10 +1,10 @@
 package skyforce.server;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class Connection implements Runnable {
     private Socket socket;
@@ -37,11 +37,8 @@ public class Connection implements Runnable {
                 try {
                     Object data = in.readObject();
                     EventHandlers.received(data, this);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }catch (EOFException e) {
+                } catch (ClassNotFoundException | SocketException e) {
                     close();
-                    break;
                 }
             }
         } catch (IOException e) {
@@ -61,6 +58,7 @@ public class Connection implements Runnable {
             out.close();
             socket.close();
             Server.connections.remove(id);
+            GameManager.players.remove(id);
         } catch (IOException e) {
             e.printStackTrace();
         }
