@@ -39,7 +39,6 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         startGameBtn = new JButton("Start Game");
         JSeparator separator = new JSeparator();
 
-
         exitBtn.setBounds(20, 540, 220, 50);
         exitBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 14));
         startGameBtn.setBounds(330, 540, 220, 50);
@@ -60,21 +59,49 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     }
 
     private JPanel createPlayerSlot(int x, int y) {
+        String emptyPlayerName = "Free";
         JPanel ret  = new JPanel();
         ret.setLayout(null);
         ret.setSize(200, 200);
         ret.setBorder(new LineBorder(Color.BLACK));
         ret.setBounds(x, y, PLAYER_HOLDER_WIDTH, PLAYER_HOLDER_HEIGHT);
 
-        JLabel name = new JLabel("Free", SwingConstants.CENTER);
+        JLabel name = new JLabel(emptyPlayerName, SwingConstants.CENTER);
         name.setBounds(20, 260, 160, 30);
         name.setFont(new Font(NORMAL_FONT, Font.PLAIN, 14));
+        JPanel readyPanel = createReadyButton();
 
         ret.add(name);
+        ret.add(readyPanel);
         this.slots.add(name);
         return ret;
     }
 
+    private JPanel createReadyButton(){
+        JPanel p = new JPanel();
+        p.setLayout(null);
+        p.setSize(150, 100);
+        p.setBorder(new LineBorder(Color.BLACK));
+        p.setBounds(0, 0, 200, 50);
+        JButton readyButton = new JButton("Ready");
+        readyButton.setBounds(0, 0, 150, 50);
+        JPanel box = new JPanel();
+        box.setBorder(new LineBorder(Color.BLACK));
+        box.setBounds(150, 0, 50, 50);
+        ImageIcon icon = new ImageIcon("/success-tick.png");
+        JLabel thumb = new JLabel();
+        thumb.setIcon(icon);
+        box.add(thumb);
+        p.add(readyButton);
+        p.add(box);
+        return  p;
+    }
+
+//    @Override
+//    protected void paintComponent(Graphics graphics) {
+//        super.paintComponent(graphics);
+//        graphics.drawImage(new Image(), 0, 0, 50, 50,null);
+//    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
