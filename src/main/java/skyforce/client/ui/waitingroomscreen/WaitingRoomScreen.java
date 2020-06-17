@@ -138,6 +138,13 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startGameBtn) {
+            for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry : roomStatus.getConnectionHashMap().entrySet()){
+                UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
+                if(!pStatus.getIsReady()){
+                    JOptionPane.showMessageDialog(null, "Can not start the game, somebody are not ready");
+                    return;
+                }
+            }
             Client.sendObject(new StartGameRequestPacket());
         }
         if (e.getSource() == readyBtn){
