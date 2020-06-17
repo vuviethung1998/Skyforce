@@ -1,5 +1,6 @@
 package skyforce.client;
 
+import skyforce.common.Constants;
 import skyforce.packet.JoinRoomRequestPacket;
 
 import java.io.EOFException;
@@ -23,13 +24,12 @@ public class Client implements Runnable{
     private static boolean running = false;
 
     private static int connectionId;
-    private String playerName;
-
+    private static String ingameBackground;
 
     public Client(String host, int port, String playerName) {
         this.host = host;
         this.port = port;
-        this.playerName = playerName;
+        Client.ingameBackground = Constants.INGAME_BACKGROUND_GALAXY;
     }
 
     public static void connect(String host, int port, String playerName) {
@@ -96,13 +96,6 @@ public class Client implements Runnable{
         }
     }
 
-    public String getPlayerName() {
-        return this.playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
 
     public static int getConnectionId() {
         return connectionId;
@@ -116,4 +109,11 @@ public class Client implements Runnable{
         running = run;
     }
 
+    public static String getIngameBackground() {
+        return Client.ingameBackground;
+    }
+
+    public static void setIngameBackground(String background) {
+        Client.ingameBackground = background;
+    }
 }

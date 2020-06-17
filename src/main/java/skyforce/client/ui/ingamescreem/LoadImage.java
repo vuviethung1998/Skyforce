@@ -1,5 +1,7 @@
 package skyforce.client.ui.ingamescreem;
 
+import skyforce.client.Client;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,7 +13,7 @@ public class LoadImage {
     public static BufferedImage enemy, player, animated;
 
     public static void init() {
-        image = imageLoader("/whte.png");
+        image = imageLoader(Client.getIngameBackground());
         bullet = imageLoader("/bullet.png");
        entities = imageLoader("/airplane.png");
        animated = imageLoader("/plane-animated-1.png");
