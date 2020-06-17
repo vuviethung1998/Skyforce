@@ -31,7 +31,7 @@ public class Constants {
 
     public static final String INGAME_BACKGROUND_BASIC = "/whte.png";
     public static final String INGAME_BACKGROUND_GALAXY = "/galaxy.png";
-    public static final String INGAME_BACKGROUND_PLANET = "/planet.png";
+    public static final String INGAME_BACKGROUND_PLANET = "/planet.jpg";
 
     public static final int NULL_CONNECTION = -1;
 

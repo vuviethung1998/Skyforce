@@ -3,6 +3,7 @@ package skyforce.client.ui.waitingroomscreen;
 import com.google.common.eventbus.Subscribe;
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
+import skyforce.common.Constants;
 import skyforce.common.EventBuz;
 import skyforce.packet.ReadyPacket;
 import skyforce.packet.StartGameRequestPacket;
@@ -23,12 +24,14 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     JButton exitBtn;
     JButton startGameBtn;
     JButton readyBtn;
+    JComboBox cb;
 
     private ArrayList<JLabel> slots;
     private ArrayList<JLabel> readySlots;
     private ArrayList<JPanel> readyBoxes;
     private ArrayList<Integer> connections;
     private UpdateRoomPacket roomStatus;
+    private String[] backgroundImageOptions = {INGAME_BACKGROUND_BASIC, INGAME_BACKGROUND_PLANET, INGAME_BACKGROUND_GALAXY};
 
     public WaitingRoomScreen(int width, int height) {
         this.slots = new ArrayList<>();
@@ -68,10 +71,30 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
             add(slot);
         }
 
+        JLabel cbLabel = createComboBoxLabel();
+        add(cbLabel);
+        cb = createComboBox();
+        cb.addActionListener(this);
+        add(cb);
+
         add(exitBtn);
         add(startGameBtn);
         add(readyBtn);
         add(separator);
+    }
+
+    private JLabel createComboBoxLabel(){
+        JLabel label = new JLabel("Choose battle field:", SwingConstants.CENTER);
+        label.setBounds(450, 20, 200, 30);
+        label.setFont(new Font(NORMAL_FONT, Font.PLAIN, 18));
+        return label;
+    }
+
+    private JComboBox createComboBox(){
+        String backgroundOptions[] = {"Basic", "Planet", "Galaxy"};
+        JComboBox cb = new JComboBox(backgroundOptions);
+        cb.setBounds(650, 20,230,30);
+        return cb;
     }
 
     private JPanel createPlayerSlot(int x, int y) {
@@ -131,14 +154,17 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
                 }
             }
         }
+        if (e.getSource() == cb){
+            int selectedIndex = cb.getSelectedIndex();
+            if(selectedIndex != -1){
+                System.out.println(backgroundImageOptions[selectedIndex]);
+                Client.setIngameBackground(backgroundImageOptions[selectedIndex]);
+            }
+        }
     }
 
     @Subscribe
     public void opUpdate(UpdateRoomPacket p) {
-//        for (int i = 0; i < p.getPlayerNames().size(); i++) {
-//            String name = p.getPlayerNames().get(i);
-//            this.slots.get(i).setText(name);
-//        }
         roomStatus = p;
         for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: p.getConnectionHashMap().entrySet()){
             int connectionId = entry.getKey();
