@@ -5,13 +5,13 @@ import java.io.Serializable;
 public class ReadyPacket implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String playerName;
+    private boolean ready;
 
-    public ReadyPacket(String name) {
-        this.playerName = name;
+    public ReadyPacket(boolean ready) {
+        this.ready = ready;
     }
 
-    public String getPlayerName() {
-        return this.playerName;
+    public boolean isReady() {
+        return this.ready;
     }
 }

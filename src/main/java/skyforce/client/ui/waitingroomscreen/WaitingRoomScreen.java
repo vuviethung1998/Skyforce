@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
 
 import static skyforce.common.Constants.*;
 
@@ -27,12 +28,14 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
     private ArrayList<JLabel> readySlots;
     private ArrayList<JPanel> readyBoxes;
     private ArrayList<Integer> connections;
+    private UpdateRoomPacket roomStatus;
 
     public WaitingRoomScreen(int width, int height) {
         this.slots = new ArrayList<>();
         this.readySlots = new ArrayList<>();
         this.readyBoxes = new ArrayList<>();
         this.connections = new ArrayList<>();
+        this.roomStatus = new UpdateRoomPacket();
         setSize(width, height);
         setLayout(null);
         initUI();
@@ -115,16 +118,16 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
             Client.sendObject(new StartGameRequestPacket());
         }
         if (e.getSource() == readyBtn){
-            for(int i = 0; i < readySlots.size(); i++){
-                if(this.connections.get(i) == Client.getConnectionId()){
-                    if(!this.readySlots.get(i).getText().equals("Ready")){
-                        this.readySlots.get(i).setText("Ready");
-                        this.readyBoxes.get(i).setBackground(Color.GREEN);
-                    } else {
-                        this.readySlots.get(i).setText("");
-                        this.readyBoxes.get(i).setBackground(Color.WHITE);
-                    }
-                    Client.sendObject(new ReadyPacket(Client.getPlayerName()));
+            System.out.println("Ready");
+            for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: roomStatus.getConnectionHashMap().entrySet()){
+                int connectionId = entry.getKey();
+                System.out.println(connectionId);
+                System.out.println(Client.getConnectionId());
+                if(connectionId == Client.getConnectionId()){
+                    UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
+                    Client.sendObject(new ReadyPacket(!pStatus.getIsReady()));
+                    this.readySlots.get(connectionId).setText("Ready");
+                    this.readyBoxes.get(connectionId).setBackground(Color.GREEN);
                 }
             }
         }
@@ -132,9 +135,22 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
 
     @Subscribe
     public void opUpdate(UpdateRoomPacket p) {
-        for (int i = 0; i < p.getPlayerNames().size(); i++) {
-            String name = p.getPlayerNames().get(i);
-            this.slots.get(i).setText(name);
+//        for (int i = 0; i < p.getPlayerNames().size(); i++) {
+//            String name = p.getPlayerNames().get(i);
+//            this.slots.get(i).setText(name);
+//        }
+        roomStatus = p;
+        for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: p.getConnectionHashMap().entrySet()){
+            int connectionId = entry.getKey();
+            UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
+            this.slots.get(connectionId).setText(pStatus.getPlayerName());
+            if(pStatus.getIsReady()){
+                this.readySlots.get(connectionId).setText("Ready");
+                this.readyBoxes.get(connectionId).setBackground(Color.GREEN);
+            } else{
+                this.readySlots.get(connectionId).setText("");
+                this.readyBoxes.get(connectionId).setBackground(Color.WHITE);
+            }
         }
     }
 

@@ -32,7 +32,7 @@ public class UpdateRoomPacket implements Serializable {
         playerStatus.setIsReady(isReady);
     }
 
-    public class PlayerStatus {
+    public class PlayerStatus implements Serializable{
         private String playerName;
         private boolean isReady;
 
