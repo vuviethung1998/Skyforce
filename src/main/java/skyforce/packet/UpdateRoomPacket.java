@@ -27,6 +27,10 @@ public class UpdateRoomPacket implements Serializable {
         playerStatus.setPlayerName(playerName);
     }
 
+    public void removeConnection(int connectionId){
+        connectionHashMap.remove(connectionId);
+    }
+
     public void setIsReady(int connectionId, boolean isReady){
         PlayerStatus playerStatus = (PlayerStatus)connectionHashMap.get(connectionId);
         playerStatus.setIsReady(isReady);

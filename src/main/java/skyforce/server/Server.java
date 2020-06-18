@@ -62,10 +62,18 @@ public class Server implements Runnable{
     }
 
     private void initConnection(Socket socket) {
-        int id = connections.size();
-        Connection connection = new Connection(socket, id);
-        Server.connections.put(id, connection);
-        new Thread(connection).start();
+        if(connections.size() >= 4){
+            return;
+        }
+        for(int i = 0; i < 4; i++){
+            if(!Server.connections.containsKey(i)){
+                System.out.printf("[SERVER] New connection id: %d\n", i);
+                Connection connection = new Connection(socket, i);
+                Server.connections.put(i, connection);
+                new Thread(connection).start();
+                return;
+            }
+        }
     }
 
     public void shutdown() {

@@ -5,10 +5,7 @@ import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
 import skyforce.common.Constants;
 import skyforce.common.EventBuz;
-import skyforce.packet.ReadyPacket;
-import skyforce.packet.StartGameRequestPacket;
-import skyforce.packet.StartGameResponsePacket;
-import skyforce.packet.UpdateRoomPacket;
+import skyforce.packet.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -168,11 +165,22 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
                 Client.setIngameBackground(backgroundImageOptions[selectedIndex]);
             }
         }
+        if (e.getSource() == exitBtn){
+            Client.sendObject(new ExitRoomPacket());
+            ScreenManager.getInstance().navigate(HOME_SCREEN);
+        }
     }
 
     @Subscribe
     public void opUpdate(UpdateRoomPacket p) {
         roomStatus = p;
+        for(int i = 0; i < 4; i++){
+            if(!p.getConnectionHashMap().containsKey(i)){
+                this.slots.get(i).setText("");
+                this.readyBoxes.get(i).setBackground(null);
+                this.readySlots.get(i).setText("");
+            }
+        }
         for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: p.getConnectionHashMap().entrySet()){
             int connectionId = entry.getKey();
             UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
@@ -185,6 +193,7 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
                 this.readyBoxes.get(connectionId).setBackground(Color.WHITE);
             }
         }
+
     }
 
     @Subscribe

@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Map;
 
 public class Connection implements Runnable {
     private Socket socket;
@@ -50,15 +51,24 @@ public class Connection implements Runnable {
         }
     }
 
-    private void close() {
+    public void close() {
         System.out.printf("[SERVER] Client closed ClientID: %d\n", id);
         running = false;
         try {
+            Server.connections.remove(id);
+            if(GameManager.players != null){
+                GameManager.players.remove(id);
+            }
+            EventHandlers.roomStatus.removeConnection(id);
+            for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()){
+                Connection c = entry.getValue();
+                System.out.println("room status");
+                System.out.println(EventHandlers.roomStatus);
+                c.sendObject(EventHandlers.roomStatus);
+            }
             in.close();
             out.close();
             socket.close();
-            Server.connections.remove(id);
-            GameManager.players.remove(id);
         } catch (IOException e) {
             e.printStackTrace();
         }
