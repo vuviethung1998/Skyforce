@@ -27,6 +27,11 @@ class EventHandlers {
             handleReadyPacket((ReadyPacket) p, connection);
             return;
         }
+
+        if (p instanceof ExitRoomPacket){
+            handleExitRoomPacket((ExitRoomPacket) p, connection);
+            return;
+        }
     }
 
     private static void handleJoinRoomRequest(JoinRoomRequestPacket p, Connection connection) {
@@ -34,11 +39,6 @@ class EventHandlers {
         connection.setPlayerName(p.getPlayerName());
         connection.sendObject(new JoinRoomResponsePacket(connection.getPlayerName(), connection.getId()));
 
-//        UpdateRoomPacket update = new UpdateRoomPacket();
-//        for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
-//            Connection c = entry.getValue();
-//            update.addConnection(c.getId(), c.getPlayerName(), false);
-//        }
         roomStatus.addConnection(connection.getId(), p.getPlayerName(), false);
 
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
@@ -82,5 +82,9 @@ class EventHandlers {
             Connection c = entry.getValue();
             c.sendObject(roomStatus);
         }
+    }
+
+    private static void handleExitRoomPacket(ExitRoomPacket p, Connection connection){
+        connection.close();
     }
 }
