@@ -2,7 +2,6 @@ package skyforce.client.ui.homescreen;
 
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
-import skyforce.server.Server;
 
 import javax.swing.*;
 import java.awt.*;
@@ -116,7 +115,6 @@ public class HomeScreen extends JPanel implements ActionListener{
             return;
         }
 
-        Server.start(HOST_PORT);
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
         Client.connect("localhost", HOST_PORT, playerName);
     }
