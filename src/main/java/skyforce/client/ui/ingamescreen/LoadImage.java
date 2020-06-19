@@ -16,7 +16,7 @@ public class LoadImage {
         image = imageLoader(Client.getIngameBackground());
         bullet = imageLoader("/bullet.png");
        entities = imageLoader("/airplane.png");
-       animated = imageLoader("/plane-animated-1.png");
+       animated = imageLoader("/airplane.png");
        enemy = entities.getSubimage(0, 0,85, 90);
        player = entities.getSubimage(85, 0, 95, 90);
     }

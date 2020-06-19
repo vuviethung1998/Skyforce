@@ -30,16 +30,16 @@ public class HomeScreen extends JPanel implements ActionListener{
         joinGameBtn = new JButton("Join Game");
         quitGameBtn = new JButton("Quit");
 
-        titleLb = new JLabel("Skyforce 1999", SwingConstants.CENTER);
+        titleLb = new JLabel("Skyforce", SwingConstants.CENTER);
 
-        createGameBtn.setBounds(580, 320, 220, 50);
+        createGameBtn.setBounds(560, 320, 220, 50);
         createGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
-        joinGameBtn.setBounds(50, 320, 220, 50);
+        joinGameBtn.setBounds(560, 396, 220, 50);
         joinGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
-        quitGameBtn.setBounds(320, 320, 220, 50);
+        quitGameBtn.setBounds(560, 472, 220, 50);
         quitGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
 
-        titleLb.setBounds(270, 160, 390, 70);
+        titleLb.setBounds(475, 160, 390, 70);
         titleLb.setFont(new Font("Serif", Font.BOLD, 46));
 
         quitGameBtn.addActionListener(this);
