@@ -26,7 +26,7 @@ public class Client implements Runnable{
     private static int connectionId;
     private static String ingameBackground;
 
-    public Client(String host, int port, String playerName) {
+    public Client(String host, int port) {
         this.host = host;
         this.port = port;
         Client.ingameBackground = Constants.INGAME_BACKGROUND_GALAXY;
@@ -37,7 +37,7 @@ public class Client implements Runnable{
             socket = new Socket(host, port);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            client = new Client(host, port, playerName);
+            client = new Client(host, port);
             new Thread(client).start();
             sendObject(new JoinRoomRequestPacket(playerName));
         } catch (IOException e) {

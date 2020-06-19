@@ -2,6 +2,7 @@ package skyforce.client.ui.homescreen;
 
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
+import skyforce.common.Constants;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,13 +63,13 @@ public class HomeScreen extends JPanel implements ActionListener{
         }
     }
 
-    private String enterPlayerName() {
+    private String[] enterPlayerName() {
         JTextField ip = new JTextField();
-        JTextField host = new JTextField();
+        JTextField port = new JTextField();
         JTextField name = new JTextField();
         Object[] message = {
                 "ip:", ip,
-                "host:", host,
+                "host:", port,
                 "player name:", name
         };
         int op = JOptionPane.showConfirmDialog(
@@ -79,7 +80,7 @@ public class HomeScreen extends JPanel implements ActionListener{
                 JOptionPane.PLAIN_MESSAGE
         );
 
-        return name.getText();
+        return new String[]{name.getText(), ip.getText(), port.getText()};
     }
 
     private boolean validateName(String playerName) {
@@ -110,22 +111,22 @@ public class HomeScreen extends JPanel implements ActionListener{
     }
 
     private void createNewGame() {
-        String playerName = enterPlayerName();
-        if (!validateName(playerName)) {
+        String[] inputs = enterPlayerName();
+        if (!validateName(inputs[0])) {
             return;
         }
 
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
-        Client.connect("localhost", HOST_PORT, playerName);
+        Client.connect(inputs[1] == ""? "localhost": inputs[1], HOST_PORT, inputs[0]);
     }
 
     private void joinGame() {
-        String playerName = enterPlayerName();
-        if (!validateName(playerName)) {
+        String[] inputs = enterPlayerName();
+        if (!validateName(inputs[0])) {
             return;
         }
 
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
-        Client.connect("localhost", HOST_PORT, playerName);
+        Client.connect(inputs[1] == ""? "localhost": inputs[1], HOST_PORT, inputs[0]);
     }
 }
