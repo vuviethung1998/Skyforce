@@ -1,4 +1,4 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.client.ui.ingamescreen;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

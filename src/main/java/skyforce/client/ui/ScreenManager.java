@@ -1,7 +1,7 @@
 package skyforce.client.ui;
 
 import skyforce.client.ui.homescreen.HomeScreen;
-import skyforce.client.ui.ingamescreem.InGameScreen;
+import skyforce.client.ui.ingamescreen.InGameScreen;
 import skyforce.client.ui.waitingroomscreen.WaitingRoomScreen;
 
 import javax.swing.*;

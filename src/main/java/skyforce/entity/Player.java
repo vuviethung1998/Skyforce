@@ -2,8 +2,8 @@ package skyforce.entity;
 
 
 import skyforce.client.Client;
-import skyforce.client.ui.ingamescreem.HelicopterImageLoader;
-import skyforce.client.ui.ingamescreem.LoadImage;
+import skyforce.client.ui.ingamescreen.HelicopterImageLoader;
+import skyforce.client.ui.ingamescreen.LoadImage;
 import skyforce.common.Constants;
 import skyforce.server.GameManager;
 

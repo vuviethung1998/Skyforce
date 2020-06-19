@@ -1,4 +1,4 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.client.ui.ingamescreen;
 
 import com.google.common.eventbus.Subscribe;
 import skyforce.client.Client;
@@ -11,7 +11,6 @@ import skyforce.entity.Player;
 import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
 import skyforce.packet.YouDiePacket;
-import skyforce.server.GameManager;
 
 
 import javax.swing.*;
@@ -19,8 +18,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 

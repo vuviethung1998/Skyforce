@@ -1,4 +1,4 @@
-package skyforce.client.ui.ingamescreem;
+package skyforce.client.ui.ingamescreen;
 
 import skyforce.client.Client;
 
