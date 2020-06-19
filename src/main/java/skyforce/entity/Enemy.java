@@ -9,14 +9,16 @@ import java.io.Serializable;
 public class Enemy implements Serializable {
     private int x;
     private int y;
+    private int speed;
 
-    public Enemy(int x, int y) {
+    public Enemy(int x, int y, int speed) {
         this.x = x;
         this.y = y;
+        this.speed = speed;
     }
 
     public void tick() {
-        y = y + 1;
+        y = y + speed;
     }
 
     public void render(Graphics g) {

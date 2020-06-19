@@ -8,12 +8,11 @@ import skyforce.packet.PlayerActionPacket;
 import skyforce.packet.UpdateGamePacket;
 import skyforce.packet.YouDiePacket;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameManager implements Runnable{
+    private static int enemySpeed;
     private static ArrayList<Enemy> enemies;
     public static HashMap<Integer, Player> players;
     public static ArrayList<Bullet> bullets;
@@ -34,6 +33,7 @@ public class GameManager implements Runnable{
         delay = 800;
         current = System.nanoTime();
         running = true;
+        enemySpeed = 1;
 
         for(Map.Entry<Integer, Connection> entry : Server.connections.entrySet()) {
             Connection connection = entry.getValue();
@@ -45,6 +45,13 @@ public class GameManager implements Runnable{
     @Override
     public void run(){
         System.out.println("running");
+
+        new Timer().scheduleAtFixedRate(new TimerTask(){
+            @Override
+            public void run(){
+                enemySpeed = enemySpeed + 3;
+            }
+        },0,30000);
 
         double delta = 0;
         long current = System.nanoTime();
@@ -70,6 +77,7 @@ public class GameManager implements Runnable{
         }
     }
 
+
     public UpdateGamePacket tick() {
         this.generateEnemies();
 
@@ -85,7 +93,7 @@ public class GameManager implements Runnable{
         long breaks = (System.nanoTime() - current)/1000000;
         if (breaks > delay) {
             int randX = ThreadLocalRandom.current().nextInt(Constants.ENEMY_WIDTH,Constants.GAME_WIDTH - Constants.ENEMY_WIDTH);
-            enemies.add(new Enemy(randX, 0));
+            enemies.add(new Enemy(randX, 0, enemySpeed));
             current = System.nanoTime();
         }
     }
