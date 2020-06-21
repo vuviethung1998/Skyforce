@@ -73,6 +73,7 @@ public class WaitingRoomScreenHost extends JPanel implements ActionListener {
 		add(startGameBtn);
 		add(readyBtn);
 		add(separator);
+		
 	}
 
 	private JPanel createPlayerSlot(int x, int y) {
@@ -110,21 +111,6 @@ public class WaitingRoomScreenHost extends JPanel implements ActionListener {
 		p.add(readySlot);
 		p.add(box);
 		return p;
-	}
-
-	void hostStart() {
-		System.out.println("Ready");
-		for (Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry : roomStatus.getConnectionHashMap().entrySet()) {
-			int connectionId = entry.getKey();
-			System.out.println(connectionId);
-			System.out.println(Client.getConnectionId());
-			if (connectionId == Client.getConnectionId()) {
-				UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
-				Client.sendObject(new ReadyPacket(!pStatus.getIsReady()));
-				this.readySlots.get(connectionId).setText("Ready");
-				this.readyBoxes.get(connectionId).setBackground(Color.GREEN);
-			}
-		}
 	}
 
 	@Override
