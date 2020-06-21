@@ -2,7 +2,8 @@ package skyforce.client.ui;
 
 import skyforce.client.ui.homescreen.HomeScreen;
 import skyforce.client.ui.ingamescreen.InGameScreen;
-import skyforce.client.ui.waitingroomscreen.WaitingRoomScreen;
+import skyforce.client.ui.waitingroomscreen.WaitingRoomScreenHost;
+import skyforce.client.ui.waitingroomscreen.WaitingRoomScreenPlayer;
 
 import javax.swing.*;
 
@@ -46,11 +47,14 @@ public class ScreenManager {
             case HOME_SCREEN:
                 window.getContentPane().add( new HomeScreen(SCREEN_WIDTH, SCREEN_HEIGHT));
                 break;
-            case WAITING_ROOM_SCREEN:
-                window.getContentPane().add( new WaitingRoomScreen(SCREEN_WIDTH, SCREEN_HEIGHT));
+            case WAITING_ROOM_SCREEN_HOST:
+                window.getContentPane().add( new WaitingRoomScreenHost(SCREEN_WIDTH, SCREEN_HEIGHT));
                 break;
             case INGAME_SCREEN:
                 window.getContentPane().add( new InGameScreen(SCREEN_WIDTH, SCREEN_HEIGHT));
+            case WAITING_ROOM_SCREEN_PLAYER:
+                window.getContentPane().add( new WaitingRoomScreenPlayer(SCREEN_WIDTH, SCREEN_HEIGHT));
+                break;
         }
 
         window.revalidate();

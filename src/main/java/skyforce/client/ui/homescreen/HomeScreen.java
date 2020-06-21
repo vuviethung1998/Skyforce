@@ -2,6 +2,7 @@ package skyforce.client.ui.homescreen;
 
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
+import skyforce.client.ui.ingamescreen.LoadImage;
 import skyforce.common.Constants;
 
 import javax.swing.*;
@@ -9,6 +10,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static com.skyforce.common.Constants.SCREEN_HEIGHT;
+import static com.skyforce.common.Constants.SCREEN_WIDTH;
 import static skyforce.common.Constants.*;
 
 
@@ -30,8 +33,6 @@ public class HomeScreen extends JPanel implements ActionListener{
         joinGameBtn = new JButton("Join Game");
         quitGameBtn = new JButton("Quit");
 
-        titleLb = new JLabel("Skyforce", SwingConstants.CENTER);
-
         createGameBtn.setBounds(560, 320, 220, 50);
         createGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
         joinGameBtn.setBounds(560, 396, 220, 50);
@@ -39,8 +40,6 @@ public class HomeScreen extends JPanel implements ActionListener{
         quitGameBtn.setBounds(560, 472, 220, 50);
         quitGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 24));
 
-        titleLb.setBounds(475, 160, 390, 70);
-        titleLb.setFont(new Font("Serif", Font.BOLD, 46));
 
         quitGameBtn.addActionListener(this);
         createGameBtn.addActionListener(this);
@@ -49,7 +48,6 @@ public class HomeScreen extends JPanel implements ActionListener{
         add(createGameBtn);
         add(joinGameBtn);
         add(quitGameBtn);
-        add(titleLb);
     }
 
     @Override
@@ -116,7 +114,7 @@ public class HomeScreen extends JPanel implements ActionListener{
             return;
         }
 
-        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
+        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN_HOST);
         Client.connect(inputs[1] == ""? "localhost": inputs[1], HOST_PORT, inputs[0]);
     }
 
@@ -126,7 +124,12 @@ public class HomeScreen extends JPanel implements ActionListener{
             return;
         }
 
-        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN);
+        ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN_PLAYER);
         Client.connect(inputs[1] == ""? "localhost": inputs[1], HOST_PORT, inputs[0]);
+    }
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(LoadImage.imageLoader("/sky-force.jpg"), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
     }
 }

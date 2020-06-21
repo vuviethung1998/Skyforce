@@ -20,7 +20,9 @@ public class Constants {
     public static final int PLAYER_HOLDER_HEIGHT = 300;
 
     public static final String HOME_SCREEN = "HomeScreen";
-    public static final String WAITING_ROOM_SCREEN = "WaitingRoomScreen";
+    public static final String WAITING_ROOM_SCREEN_HOST = "WaitingRoomScreenHost";
+    public static final String WAITING_ROOM_SCREEN_PLAYER = "WaitingRoomScreenPlayer";
+    
     public static final String INGAME_SCREEN = "InGameScreen";
     public static final int PLAYER_WIDTH = 30;
     public static final int PLAYER_HEIGHT = 30;

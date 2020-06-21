@@ -1,6 +1,8 @@
 package skyforce.client.ui.waitingroomscreen;
 
 import com.google.common.eventbus.Subscribe;
+
+
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
 import skyforce.common.Constants;
@@ -17,20 +19,21 @@ import java.util.Map;
 
 import static skyforce.common.Constants.*;
 
-public class WaitingRoomScreen extends JPanel implements ActionListener {
-    JButton exitBtn;
+public class WaitingRoomScreenHost extends JPanel implements ActionListener {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	JButton exitBtn;
     JButton startGameBtn;
     JButton readyBtn;
-    JComboBox cb;
 
     private ArrayList<JLabel> slots;
     private ArrayList<JLabel> readySlots;
     private ArrayList<JPanel> readyBoxes;
     private ArrayList<Integer> connections;
     private UpdateRoomPacket roomStatus;
-    private String[] backgroundImageOptions = {INGAME_BACKGROUND_BASIC, INGAME_BACKGROUND_PLANET, INGAME_BACKGROUND_GALAXY};
-
-    public WaitingRoomScreen(int width, int height) {
+    public WaitingRoomScreenHost(int width, int height) {
         this.slots = new ArrayList<>();
         this.readySlots = new ArrayList<>();
         this.readyBoxes = new ArrayList<>();
@@ -48,51 +51,29 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
         int[] slotLocations = {20, 240, 460, 680};
         exitBtn = new JButton("Exit Room");
         startGameBtn = new JButton("Start Game");
-        readyBtn = new JButton("Ready");
         JSeparator separator = new JSeparator();
 
         exitBtn.setBounds(20, 540, 220, 50);
         exitBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 14));
-        startGameBtn.setBounds(330, 540, 220, 50);
         startGameBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 26));
-        readyBtn.setBounds(650, 540, 220, 50);
-        readyBtn.setFont(new Font(NORMAL_FONT, Font.PLAIN, 26));
+        startGameBtn.setBounds(650, 540, 220, 50);
+
         separator.setBounds(20, 525, 860, 10);
 
         exitBtn.addActionListener(this);
         startGameBtn.addActionListener(this);
-        readyBtn.addActionListener(this);
 
         for (int i = 0; i < slotLocations.length; i++) {
             JPanel slot = createPlayerSlot(slotLocations[i], 210);
             add(slot);
         }
 
-        JLabel cbLabel = createComboBoxLabel();
-        add(cbLabel);
-        cb = createComboBox();
-        cb.addActionListener(this);
-        add(cb);
-
         add(exitBtn);
         add(startGameBtn);
-        add(readyBtn);
         add(separator);
     }
 
-    private JLabel createComboBoxLabel(){
-        JLabel label = new JLabel("Choose battle field:", SwingConstants.CENTER);
-        label.setBounds(450, 20, 200, 30);
-        label.setFont(new Font(NORMAL_FONT, Font.PLAIN, 18));
-        return label;
-    }
 
-    private JComboBox createComboBox(){
-        String backgroundOptions[] = {"Basic", "Planet", "Galaxy"};
-        JComboBox cb = new JComboBox(backgroundOptions);
-        cb.setBounds(650, 20,230,30);
-        return cb;
-    }
 
     private JPanel createPlayerSlot(int x, int y) {
         String emptyPlayerName = "Free";
@@ -144,27 +125,20 @@ public class WaitingRoomScreen extends JPanel implements ActionListener {
             }
             Client.sendObject(new StartGameRequestPacket());
         }
-        if (e.getSource() == readyBtn){
-            System.out.println("Ready");
-            for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: roomStatus.getConnectionHashMap().entrySet()){
-                int connectionId = entry.getKey();
-                System.out.println(connectionId);
-                System.out.println(Client.getConnectionId());
-                if(connectionId == Client.getConnectionId()){
-                    UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
-                    Client.sendObject(new ReadyPacket(!pStatus.getIsReady()));
-                    this.readySlots.get(connectionId).setText("Ready");
-                    this.readyBoxes.get(connectionId).setBackground(Color.GREEN);
-                }
-            }
-        }
-        if (e.getSource() == cb){
-            int selectedIndex = cb.getSelectedIndex();
-            if(selectedIndex != -1){
-                System.out.println(backgroundImageOptions[selectedIndex]);
-                Client.setIngameBackground(backgroundImageOptions[selectedIndex]);
-            }
-        }
+//        if (e.getSource() == readyBtn){
+//            System.out.println("Ready");
+//            for(Map.Entry<Integer, UpdateRoomPacket.PlayerStatus> entry: roomStatus.getConnectionHashMap().entrySet()){
+//                int connectionId = entry.getKey();
+//                System.out.println(connectionId);
+//                System.out.println(Client.getConnectionId());
+//                if(connectionId == Client.getConnectionId()){
+//                    UpdateRoomPacket.PlayerStatus pStatus = entry.getValue();
+//                    Client.sendObject(new ReadyPacket(!pStatus.getIsReady()));
+//                    this.readySlots.get(connectionId).setText("Ready");
+//                    this.readyBoxes.get(connectionId).setBackground(Color.GREEN);
+//                }
+//            }
+//        }
         if (e.getSource() == exitBtn){
             Client.sendObject(new ExitRoomPacket());
             ScreenManager.getInstance().navigate(HOME_SCREEN);
