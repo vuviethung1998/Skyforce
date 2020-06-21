@@ -1,25 +1,26 @@
 package skyforce.client.ui.homescreen;
 
 import skyforce.client.Client;
+
 import skyforce.client.ui.ScreenManager;
 import skyforce.client.ui.ingamescreen.LoadImage;
-import skyforce.common.Constants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static com.skyforce.common.Constants.SCREEN_HEIGHT;
-import static com.skyforce.common.Constants.SCREEN_WIDTH;
 import static skyforce.common.Constants.*;
 
 
 public class HomeScreen extends JPanel implements ActionListener{
-    private JButton createGameBtn;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private JButton createGameBtn;
     private JButton joinGameBtn;
     private JButton quitGameBtn;
-    private JLabel titleLb;
 
     public HomeScreen(int width, int height) {
         setSize(width, height);
