@@ -1,6 +1,7 @@
 package skyforce.client.ui.ingamescreen;
 
 import com.google.common.eventbus.Subscribe;
+
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
 import skyforce.common.Constants;
@@ -107,10 +108,15 @@ public class InGameScreen extends JPanel implements KeyListener {
                 e.render(g);
             }
         }
-
         for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
             Player player = entry.getValue();
             player.render(g);
+                int width = 20;
+                int height = 20;
+                for (int j = 0; j < player.getHealth(); j++) {
+                    g.drawImage(LoadImage.imageLoader("/heart.png"), Constants.INGAME_PADDING_START + 20 + j * (width + 10), Constants.INGAME_PADDING_TOP + 20, width, height, null);
+                
+            }
         }
 
         for (Bullet bullet : p.bullets) {

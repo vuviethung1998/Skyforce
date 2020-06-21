@@ -9,6 +9,8 @@ public class Constants {
 
     public static final int GAME_WIDTH = 450;
     public static final int GAME_HEIGHT = 450;
+    public static final int INGAME_PADDING_START = (IN_GAME_SCREEN_WIDTH - GAME_WIDTH) / 2 ;
+    public static final int INGAME_PADDING_TOP = (IN_GAME_SCREEN_HEIGHT - GAME_HEIGHT) / 2;
 
     public static final int WINDOW_WIDTH = 900;
     public static final int WINDOW_HEIGHT = 622;
