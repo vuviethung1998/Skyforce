@@ -134,7 +134,7 @@ public class InGameScreen extends JPanel implements KeyListener {
                     player.getName(),
                     player.getScore(),
                     player.getHealth()
-            ), Constants.INGAME_PADDING_START + 300 +  (width + 10), Constants.INGAME_PADDING_TOP + 35);
+            ), Constants.INGAME_PADDING_START + 250 +  (width + 10), Constants.INGAME_PADDING_TOP + 35);
         }
 
         buffer.show();
