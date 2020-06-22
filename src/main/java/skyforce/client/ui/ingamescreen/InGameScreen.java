@@ -114,7 +114,7 @@ public class InGameScreen extends JPanel implements KeyListener {
                 int width = 20;
                 int height = 20;
                 for (int j = 0; j < player.getHealth(); j++) {
-                    g.drawImage(LoadImage.imageLoader("/heart.png"), Constants.INGAME_PADDING_START + 20 + j * (width + 10), Constants.INGAME_PADDING_TOP + 20, width, height, null);
+                    g.drawImage(LoadImage.imageLoader("/heart.png"), Constants.INGAME_PADDING_START + 50 + j * (width + 10), Constants.INGAME_PADDING_TOP + 20, width, height, null);
                 
             }
         }
