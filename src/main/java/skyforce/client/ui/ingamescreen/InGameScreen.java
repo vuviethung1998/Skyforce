@@ -128,12 +128,13 @@ public class InGameScreen extends JPanel implements KeyListener {
         for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
             count++;
             Player player = entry.getValue();
+            int width = 30;
             g.drawString(String.format(
-                    "%-20s score: %d -- health: %d",
+                    "%-20s score: %d",
                     player.getName(),
                     player.getScore(),
                     player.getHealth()
-            ), 70, 530 + count * 12);
+            ), Constants.INGAME_PADDING_START + 100 +  (width + 10), Constants.INGAME_PADDING_TOP + 20);
         }
 
         buffer.show();
