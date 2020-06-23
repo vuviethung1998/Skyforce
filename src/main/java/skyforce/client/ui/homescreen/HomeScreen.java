@@ -68,7 +68,6 @@ public class HomeScreen extends JPanel implements ActionListener{
         JTextField name = new JTextField();
         Object[] message = {
                 "ip:", ip,
-                "host:", port,
                 "player name:", name
         };
         int op = JOptionPane.showConfirmDialog(
@@ -79,7 +78,7 @@ public class HomeScreen extends JPanel implements ActionListener{
                 JOptionPane.PLAIN_MESSAGE
         );
 
-        return new String[]{name.getText(), ip.getText(), port.getText()};
+        return new String[]{name.getText(), ip.getText()};
     }
 
     private boolean validateName(String playerName) {
@@ -126,7 +125,7 @@ public class HomeScreen extends JPanel implements ActionListener{
         }
 
         ScreenManager.getInstance().navigate(WAITING_ROOM_SCREEN_PLAYER);
-        Client.connect(inputs[1] == ""? "localhost": inputs[1], HOST_PORT, inputs[0]);
+        Client.connect(inputs[1] == ""? "localhost": inputs[1],HOST_PORT, inputs[0]);
     }
     @Override
     protected void paintComponent(Graphics g) {
