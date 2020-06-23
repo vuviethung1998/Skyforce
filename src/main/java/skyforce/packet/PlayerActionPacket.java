@@ -5,7 +5,12 @@ import skyforce.client.Client;
 import java.io.Serializable;
 
 public class PlayerActionPacket implements Serializable {
-    public enum  Action {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public enum  Action {
         LEFT_PRESSED,
         RIGHT_PRESSED,
         FIRE_PRESSED,

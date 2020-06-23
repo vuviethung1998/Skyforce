@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UpdateGamePacket implements Serializable {
-    public HashMap<Integer, Player> players;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public HashMap<Integer, Player> players;
     public ArrayList<Enemy> enemies;
     public ArrayList<Bullet> bullets;
 

@@ -2,9 +2,9 @@ package skyforce.client.ui.waitingroomscreen;
 
 import com.google.common.eventbus.Subscribe;
 
+
 import skyforce.client.Client;
 import skyforce.client.ui.ScreenManager;
-import skyforce.common.Constants;
 import skyforce.common.EventBuz;
 import skyforce.packet.*;
 

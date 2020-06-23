@@ -1,12 +1,15 @@
 package skyforce.packet;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 
 public class UpdateRoomPacket implements Serializable {
-    private HashMap<Integer, PlayerStatus> connectionHashMap;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private HashMap<Integer, PlayerStatus> connectionHashMap;
 
     public UpdateRoomPacket() {
         this.connectionHashMap = new HashMap<>();
@@ -37,7 +40,11 @@ public class UpdateRoomPacket implements Serializable {
     }
 
     public class PlayerStatus implements Serializable{
-        private String playerName;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String playerName;
         private boolean isReady;
 
         public PlayerStatus(String name, boolean isReady){

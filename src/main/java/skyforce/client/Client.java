@@ -14,9 +14,6 @@ import java.net.SocketException;
 public class Client implements Runnable{
     public static Client client;
 
-    private String host;
-    private int port;
-
     private static Socket socket;
     private static ObjectOutputStream out;
     private static ObjectInputStream in;
@@ -27,8 +24,6 @@ public class Client implements Runnable{
     private static String ingameBackground;
 
     public Client(String host, int port) {
-        this.host = host;
-        this.port = port;
         Client.ingameBackground = Constants.INGAME_BACKGROUND_GALAXY;
     }
 

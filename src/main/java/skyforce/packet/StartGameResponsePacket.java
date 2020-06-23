@@ -3,7 +3,11 @@ package skyforce.packet;
 import java.io.Serializable;
 
 public class StartGameResponsePacket implements Serializable {
-    private boolean ok;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private boolean ok;
 
     public StartGameResponsePacket(boolean ok) {
         this.ok = ok;

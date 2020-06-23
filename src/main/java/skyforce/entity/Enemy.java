@@ -7,7 +7,11 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Enemy implements Serializable {
-    private int x;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int x;
     private int y;
     private int speed;
 

@@ -23,7 +23,11 @@ import java.util.Map;
 
 
 public class InGameScreen extends JPanel implements KeyListener {
-    private static Canvas canvas;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static Canvas canvas;
 
     public InGameScreen(int width, int height) {
         setSize(width, height);
@@ -124,9 +128,7 @@ public class InGameScreen extends JPanel implements KeyListener {
         }
 
         g.setColor(Color.BLUE);
-        int count = 0;
         for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
-            count++;
             Player player = entry.getValue();
             int width = 30;
             g.drawString(String.format(
@@ -149,7 +151,8 @@ public class InGameScreen extends JPanel implements KeyListener {
         ScreenManager.getInstance().navigate(Constants.HOME_SCREEN);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     protected void finalize() throws Throwable {
         ScreenManager.getInstance().getWindow().removeKeyListener(this);
         EventBuz.getInstance().unregister(this);

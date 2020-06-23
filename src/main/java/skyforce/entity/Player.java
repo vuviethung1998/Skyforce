@@ -11,7 +11,11 @@ import java.awt.*;
 import java.io.Serializable;
 
 public class Player implements Serializable {
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
     private int x;
     private int y;
     private int connectionId;
