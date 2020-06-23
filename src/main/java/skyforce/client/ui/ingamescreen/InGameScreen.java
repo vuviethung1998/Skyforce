@@ -128,15 +128,17 @@ public class InGameScreen extends JPanel implements KeyListener {
         }
 
         g.setColor(Color.BLUE);
+        int count = 1;
         for(Map.Entry<Integer, Player> entry : p.players.entrySet()) {
             Player player = entry.getValue();
             int width = 30;
+            count++;
             g.drawString(String.format(
                     "%-20s score: %d",
                     player.getName(),
                     player.getScore(),
                     player.getHealth()
-            ), Constants.INGAME_PADDING_START + 250 +  (width + 10), Constants.INGAME_PADDING_TOP + 35);
+            ), Constants.INGAME_PADDING_START + 250 +  (width + 10), Constants.INGAME_PADDING_TOP + 20 + 20*count);
         }
 
         buffer.show();
